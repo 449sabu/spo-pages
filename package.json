@@ -4,22 +4,47 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run format && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --dir src",
+    "format": "next lint --fix --dir src"
   },
   "dependencies": {
+    "@meshsdk/core": "^1.5.2",
+    "@meshsdk/react": "^1.1.7",
     "@types/node": "18.15.12",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
-    "eslint": "8.38.0",
+    "chart.js": "^4.2.1",
     "eslint-config-next": "13.3.0",
-    "next": "13.3.0",
+    "gray-matter": "^4.0.3",
+    "next": "^13.3.0",
+    "nextra": "^2.4.0",
+    "nextra-theme-blog": "^2.4.0",
     "postcss": "8.4.23",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "remark": "^14.0.2",
+    "remark-breaks": "^3.0.2",
+    "remark-gfm": "^3.0.1",
+    "remark-html": "^15.0.2",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.7",
+    "tailwindcss-bg-patterns": "^0.2.0",
+    "typescript-eslint": "^0.0.1-alpha.0"
   }
 }

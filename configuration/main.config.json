@@ -1,0 +1,24 @@
+{
+  "name": "My Pool",
+  "theme": "sunset",
+  "footer": [
+    {
+    "title": "About Cardano",
+    "data": [
+      {
+        "name": "Cardano",
+        "url": "https://cardano.org/"
+      },      {
+        "name": "Input Output Global",
+        "url": "https://iohk.io/en/"
+      },      {
+        "name": "EMURGO",
+        "url": "https://emurgo.io/"
+      },      {
+        "name": "Cardano Foundation",
+        "url": "https://cardanofoundation.org/"
+      }
+    ]
+  }
+  ]
+}
