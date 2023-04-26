@@ -15,7 +15,7 @@ const Blog = () => {
         <Card />
       </div>
       <Link
-        href="/blog"
+        href="/blog/page/1"
         className="block text-center p-8 text-lg font-medium text-blue-600"
       >
         記事一覧をみる

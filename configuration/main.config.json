@@ -1,6 +1,10 @@
 {
   "name": "My Pool",
   "theme": "sunset",
+  "blog": {
+    "title": "Cardano ブログ",
+    "description": "EpochごとのCIEL Stake Poolの活動報告やCardano開発の情報を発信しています!"
+  },
   "footer": [
     {
     "title": "About Cardano",
