@@ -1,4 +1,8 @@
-export const calculateADA = (lovelace: string, fixed: number, unit?: boolean) => {
+export const calculateADA = (
+  lovelace: string,
+  fixed: number,
+  unit?: boolean,
+) => {
   if (lovelace.length > 15) {
     const num = parseInt(lovelace) / 1000000000000000;
     if (unit) {

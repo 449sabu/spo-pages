@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const configuration = readConfig();
 
-  const theme = process.env.NEXT_PUBLIC_THEME || ''
+  const theme = process.env.NEXT_PUBLIC_THEME || '';
   // console.log(theme)
   // console.log(poolInformation);
 
@@ -39,10 +39,8 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-const Home: NextPage<Props> = ({ poolInformation,
-  configuration,
-  theme}) => {
-    const bgColor = 'bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400';
+const Home: NextPage<Props> = ({ poolInformation, configuration, theme }) => {
+  const bgColor = 'bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400';
 
   return (
     <div>
