@@ -5,7 +5,6 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import CardanoLogo from '../../../../public/Cardano-RGB_Logo-Icon-White.png';
-import Card from '@/components/Card';
 import Pagination from '@/components/Pagination';
 import { readConfig } from '@/utils/config';
 
@@ -25,8 +24,8 @@ interface Props {
   configuration: SiteConfig;
   // topics: string[];
 }
-const PAGE_SIZE = 1;
 
+const PAGE_SIZE = 5;
 const range = (start: number, end: number, length = end - start + 1) =>
   Array.from({ length }, (_, i) => start + i);
 
@@ -119,57 +118,25 @@ const Page: NextPage<Props> = ({
         </div>
         <div className={`${bgColor} wave`}></div>
       </div>
-      <div className="max-w-4xl md:m-auto md:my-12 m-8 grid grid-col md:grid-cols-3 gap-4">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+      <div className="max-w-4xl m-auto grid gap-8 grid-cols-1 grid-rows-5 my-12">
+        {article.map((e, i) => (
+          <Link key={i} href={`/blog/${e.slug}`} className="flex">
+            <Image
+              className="rounded-md"
+              src="https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/main.png"
+              width={300}
+              height={300}
+              alt={e.frontMatter.title}
+            />
+            <div className="pl-12">
+              <p className="text-2xl">{e.frontMatter.title}</p>
+              <p className="text-xl">{e.frontMatter.description}</p>
+            </div>
+          </Link>
+        ))}
       </div>
       <Pagination pages={pages} current_page={current_page} />
     </div>
-    // <BlogLayout topicList={topics}>
-    //   <div>
-    //     {article.map((post) => (
-    //       <Link href={`/blog/${post.slug}`} key={post.slug}>
-    //         <div className="p-6 border-gray-500 flex-none lg:flex">
-    //           <div className="w-80">
-    //             {post.frontMatter.image ? (
-    //               <Image
-    //                 className="rounded-md"
-    //                 src={`https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/${post.frontMatter.image}`}
-    //                 width={1200}
-    //                 height={630}
-    //                 alt={post.frontMatter.title}
-    //               />
-    //             ) : (
-    //               <Image
-    //                 className="rounded-md"
-    //                 src="https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/main.png"
-    //                 width={1200}
-    //                 height={630}
-    //                 alt={post.frontMatter.title}
-    //               />
-    //             )}
-    //           </div>
-    //           <div className="pl-12">
-    //             <h1 className="text-xl font-bold">{post.frontMatter.title}</h1>
-    //             <div className="py-4">
-    //               {post.frontMatter.published_at ? (
-    //                 <TimeLine
-    //                   date={formatDate(post.frontMatter.published_at)}
-    //                 />
-    //               ) : null}
-    //             </div>
-    //             <p>{post.frontMatter.description}</p>
-    //           </div>
-    //         </div>
-    //       </Link>
-    //     ))}
-    //     <Pagination pages={pages} current_page={current_page} />
-    //   </div>
-    // </BlogLayout>
   );
 };
 

@@ -10,9 +10,9 @@ const Blog = () => {
         BLOG
       </h1>
       <div className="grid grid-col md:grid-cols-3 gap-4">
+        {/* <Card />
         <Card />
-        <Card />
-        <Card />
+        <Card /> */}
       </div>
       <Link
         href="/blog/page/1"

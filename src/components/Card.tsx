@@ -1,6 +1,9 @@
 import Image from 'next/image';
 
-const Card = () => {
+type Props = {
+  title: string;
+};
+const Card = ({ title }: Props) => {
   return (
     <div className="block rounded-lg bg-white drop-shadow-md">
       <img
@@ -13,7 +16,7 @@ const Card = () => {
       </a>
 
       <div className="p-4">
-        <p className="mb-2 text-xl">Card title</p>
+        <p className="mb-2 text-xl">{title}</p>
         <p className="">2023-12-22</p>
       </div>
     </div>

@@ -12,3 +12,23 @@ interface SiteConfig {
     }[];
   }[];
 }
+
+type ArticleConfig = {
+  title: string;
+  date: string;
+  description: string | null;
+  tag: string[];
+  topics: string[] | null;
+  published: boolean;
+  published_at: Date | null;
+  image: string;
+};
+
+type FrontMatter = {
+  [key: string]: any;
+};
+
+type AllArticles = {
+  frontMatter: FrontMatter;
+  slug: string;
+};
