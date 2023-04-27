@@ -13,6 +13,7 @@
     "preview": "zenn preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@meshsdk/core": "^1.5.2",
     "@meshsdk/react": "^1.1.7",
     "@types/node": "18.15.12",
