@@ -14,13 +14,11 @@ interface Params extends ParsedUrlQuery {
 
 interface Props {
   article: {
-    frontMatter: {
-      [key: string]: any;
-    };
+    frontMatter: FrontMatter;
     slug: string;
   }[];
   pages: number[];
-  current_page: any;
+  current_page: number;
   configuration: SiteConfig;
   // topics: string[];
 }

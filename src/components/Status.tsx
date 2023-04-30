@@ -5,7 +5,6 @@ type Props = {
 };
 
 const Status = ({ pool_information }: Props) => {
-  const bgColor = 'bg-gradient-to-r from-rose-100 to-teal-100';
   return (
     <div className={`max-w-4xl m-auto pt-4`}>
       <div className="container my-24 px-6 mx-auto">

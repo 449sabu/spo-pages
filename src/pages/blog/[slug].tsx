@@ -8,9 +8,7 @@ interface Params extends ParsedUrlQuery {
 }
 
 type Props = {
-  frontMatter: {
-    [key: string]: any;
-  };
+  frontMatter: FrontMatter;
   content: string;
 };
 
@@ -21,7 +19,6 @@ export const getStaticPaths: GetStaticPaths = () => {
       slug: fileName.replace(/\.md$/, ''),
     },
   }));
-  // console.log('articles:', paths);
 
   return {
     paths,
@@ -35,7 +32,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   const file = fs.readFileSync(`articles/${params!.slug}.md`, 'utf-8');
   const { data, content } = matter(file);
 
-  console.log(file);
   return {
     props: {
       frontMatter: data,

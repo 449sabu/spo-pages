@@ -1,23 +1,20 @@
-import { Dialog, Transition, Tab, Menu } from '@headlessui/react';
+import { Dialog, Transition, Tab } from '@headlessui/react';
 import type { AccountInfo } from '@meshsdk/core';
+import { KoiosProvider } from '@meshsdk/core';
 import {
   useRewardAddress,
   useWallet,
   useWalletList,
   useWalletTx,
 } from '@meshsdk/react';
-import Image from 'next/image';
 import { Fragment, useState, useEffect } from 'react';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function MyModal() {
+const StakingButton = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const wallets = useWalletList();
-  const { connect, connecting, connected, name } = useWallet();
-
   function closeModal() {
     setIsOpen(false);
   }
@@ -104,8 +101,10 @@ export default function MyModal() {
                         <Tab.Panel className="m-4">
                           <p>1, ウォレットを選択</p>
                           <WalletList />
-                          <p>2. トランザクション内容の確認</p>
-                          <p>3. 「ステーキングする」ボタンを押す</p>
+                          <p>
+                            2. 内容の確認し、「ステーキングする」ボタンを押す
+                          </p>
+                          <Delegate />
                         </Tab.Panel>
                         <Tab.Panel className="m-4">作成中です。</Tab.Panel>
                       </Tab.Panels>
@@ -119,15 +118,24 @@ export default function MyModal() {
       </Transition>
     </>
   );
-}
+};
+
+export default StakingButton;
 
 const WalletList = () => {
   const wallets = useWalletList();
-  console.log(wallets);
+  const { connect } = useWallet();
+
   return (
     <div className="grid gap-2 grid-cols-3 my-4">
       {wallets.map((e, i) => (
-        <div key={i} className="border-4 rounded-md flex justify-center p-2">
+        <div
+          key={i}
+          className="border-4 rounded-md flex justify-center p-2"
+          onClick={() => {
+            connect(e.name);
+          }}
+        >
           <img src={e.icon} alt={e.name} className="h-8 w-8" />
           <button className="ml-2">{e.name}</button>
         </div>
@@ -136,175 +144,129 @@ const WalletList = () => {
   );
 };
 
-// const Delegate = ({
-//   poolId,
-//   onCheck,
-//   content,
-// }: {
-//   poolId: string;
-//   onCheck: any;
-//   content: Content;
-// }) => {
-//   const tx = useWalletTx();
-//   const { wallet } = useWallet();
-//   const rewardAddress = useRewardAddress();
-//   const [error, setError] = useState<unknown>();
-//   const [checking, setChecking] = useState(false);
-//   const [accountInfo, setAccountInfo] = useState<AccountInfo>();
-//   const [processing, setProcessing] = useState(false);
-//   const [done, setDone] = useState(false);
+const Delegate = () => {
+  const tx = useWalletTx();
+  const { wallet } = useWallet();
+  const rewardAddress = useRewardAddress();
+  const [error, setError] = useState<unknown>();
+  const [checking, setChecking] = useState(false);
+  const [accountInfo, setAccountInfo] = useState<AccountInfo>();
+  const [processing, setProcessing] = useState(false);
+  const [done, setDone] = useState(false);
 
-//   const checkAccountStatus = async () => {
-//     try {
-//       setChecking(true);
+  const Koios = new KoiosProvider('api');
+  const onCheck = (reword_address: string) =>
+    Koios.fetchAccountInfo(reword_address);
 
-//       if (rewardAddress) {
-//         const info = await onCheck(rewardAddress);
-//         setAccountInfo(info);
-//       }
+  // Accountをチェックする
+  const checkAccountStatus = async () => {
+    try {
+      setChecking(true);
 
-//       setChecking(false);
-//     } catch (error) {
-//       setError(error);
-//     }
-//   };
+      if (rewardAddress) {
+        const info = await onCheck(rewardAddress);
+        setAccountInfo(info);
+      }
 
-//   const registerAddress = async () => {
-//     setProcessing(true);
-//     setDone(false);
-//     try {
-//       if (rewardAddress) {
-//         const unsignedTx = await tx
-//           .registerStake(rewardAddress)
-//           .delegateStake(rewardAddress, poolId)
-//           .build();
+      setChecking(false);
+    } catch (error) {
+      setError(error);
+    }
+  };
 
-//         const signedTx = await wallet.signTx(unsignedTx);
-//         const txHash = await wallet.submitTx(signedTx);
-//         console.log('txHash', txHash);
-//         setDone(true);
-//       }
-//     } catch (error) {
-//       console.error('error', error);
-//       setError(error);
-//     }
-//     setProcessing(false);
-//   };
+  // 委任先変更
+  const delegateStake = async () => {
+    setProcessing(true);
+    setDone(false);
+    try {
+      if (rewardAddress) {
+        const unsignedTx = await tx.delegateStake(rewardAddress, '').build();
 
-//   const delegateStake = async () => {
-//     setProcessing(true);
-//     setDone(false);
-//     try {
-//       if (rewardAddress) {
-//         const unsignedTx = await tx
-//           .delegateStake(rewardAddress, poolId)
-//           .build();
+        const signedTx = await wallet.signTx(unsignedTx);
+        const txHash = await wallet.submitTx(signedTx);
+        setDone(true);
+      }
+    } catch (error) {
+      console.error('error', error);
+      setError(error);
+    }
+    setProcessing(false);
+  };
 
-//         const signedTx = await wallet.signTx(unsignedTx);
-//         const txHash = await wallet.submitTx(signedTx);
-//         setDone(true);
-//       }
-//     } catch (error) {
-//       console.error('error', error);
-//       setError(error);
-//     }
-//     setProcessing(false);
-//   };
+  // 委任登録
+  const registerAddress = async () => {
+    setProcessing(true);
+    setDone(false);
+    try {
+      if (rewardAddress) {
+        const unsignedTx = await tx
+          .registerStake(rewardAddress)
+          .delegateStake(rewardAddress, '')
+          .build();
 
-//   useEffect(() => {
-//     checkAccountStatus();
-//     console.log(accountInfo?.active);
-//   }, [rewardAddress]);
+        const signedTx = await wallet.signTx(unsignedTx);
+        const txHash = await wallet.submitTx(signedTx);
+        console.log('txHash', txHash);
+        setDone(true);
+      }
+    } catch (error) {
+      console.error('error', error);
+      setError(error);
+    }
+    setProcessing(false);
+  };
 
-//   if (checking) {
-//     return (
-//       <Button
-//         disabled={true}
-//         colorScheme={`${content.theme}`}
-//         bg={`${content.theme}.400`}
-//         rounded={'md'}
-//         px={6}
-//         _hover={{
-//           bg: `${content.theme}.500`,
-//         }}
-//       >
-//         Checking...
-//       </Button>
-//     );
-//     // return <span>Checking...</span>;
-//   }
-//   if (processing) {
-//     return (
-//       <Button
-//         disabled={true}
-//         colorScheme={`${content.theme}`}
-//         bg={`${content.theme}.400`}
-//         rounded={'md'}
-//         px={6}
-//         _hover={{
-//           bg: `${content.theme}.500`,
-//         }}
-//       >
-//         Loading...
-//       </Button>
-//     );
-//     // return <span>Loading...</span>;
-//   }
-//   if (done) {
-//     return (
-//       <Button
-//         disabled={true}
-//         colorScheme={`${content.theme}`}
-//         bg={`${content.theme}.400`}
-//         rounded={'md'}
-//         px={6}
-//         _hover={{
-//           bg: `${content.theme}.500`,
-//         }}
-//       >
-//         委任済み
-//       </Button>
-//     );
-//     // return <span>Stake Delegated</span>;
-//   }
+  useEffect(() => {
+    checkAccountStatus();
+  }, [rewardAddress]);
 
-//   if (accountInfo?.active) {
-//     return accountInfo.poolId === poolId ? (
-//       <button
-//         disabled={true}
-//       >
-//         既に委任しています。
-//       </button>
-//     ) : (
-//       // <span>Stake Delegated</span>
-//       <Button
-//         onClick={delegateStake}
-//         colorScheme={`${content.theme}`}
-//         bg={`${content.theme}.400`}
-//         rounded={'md'}
-//         px={6}
-//         _hover={{
-//           bg: `${content.theme}.500`,
-//         }}
-//       >
-//         委任する
-//       </Button>
-//     );
-//   }
+  if (checking) {
+    return (
+      <button
+        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
+        disabled={true}
+      >
+        Checking...
+      </button>
+    );
+  }
+  if (processing) {
+    return (
+      <button
+        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
+        disabled={true}
+      >
+        Loading...
+      </button>
+    );
+  }
+  if (done) {
+    return (
+      <button
+        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
+        disabled={true}
+      >
+        委任済み
+      </button>
+    );
+  }
+  if (accountInfo?.active) {
+    return (
+      <button
+        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
+        onClick={delegateStake}
+      >
+        委任する
+      </button>
+    );
+  }
 
-//   return (
-//     <Button
-//       onClick={registerAddress}
-//       colorScheme={`${content.theme}`}
-//       bg={`${content.theme}.400`}
-//       rounded={'md'}
-//       px={6}
-//       _hover={{
-//         bg: `${content.theme}.500`,
-//       }}
-//     >
-//       新しく委任する
-//     </Button>
-//   );
-//   // return <span onClick={registerAddress}>Register Address</span>;
-// };
+  return (
+    <button
+      className="border-4 rounded-md flex justify-center p-2"
+      onClick={registerAddress}
+    >
+      新しく委任する
+    </button>
+  );
+};

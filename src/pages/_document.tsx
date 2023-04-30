@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 import Footer from '@/components/Footer';
-import { readConfig, reedSiteConfig } from '@/utils/config';
+import { readConfig } from '@/utils/config';
 
 export default function Document() {
   const configuration = readConfig();
