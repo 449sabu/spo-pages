@@ -11,9 +11,9 @@ const Blog = () => {
         BLOG
       </h1>
       <div className="grid grid-col md:grid-cols-3 gap-4">
-        <BlogCard image={image} title={title} />
-        <BlogCard image={image} title={title} />
-        <BlogCard image={image} title={title} />
+        <BlogCard image={image} title={title} slug="" />
+        <BlogCard image={image} title={title} slug="" />
+        <BlogCard image={image} title={title} slug="" />
       </div>
       <Link
         href="/blog/page/1"

@@ -3,10 +3,9 @@ import { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
-import CardanoLogo from '../../../../public/Cardano-RGB_Logo-Icon-White.png';
 import BlogCard from '@/components/BlogCard';
 import Pagination from '@/components/Pagination';
+import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
 
 interface Params extends ParsedUrlQuery {
@@ -93,7 +92,7 @@ const Page: NextPage<Props> = ({
   const bgColor = 'bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400';
 
   return (
-    <div>
+    <Layout footer={configuration.footer}>
       <div className={`${bgColor}`}>
         <div className="h-80 md:h-96 max-w-4xl m-auto md:grid md:grid-cols-2">
           <div className="m-4 flex flex-col justify-center">
@@ -104,7 +103,7 @@ const Page: NextPage<Props> = ({
           </div>
           <div className="m-auto invisible md:visible">
             <Image
-              src={CardanoLogo}
+              src="/Cardano-Logo-White.png"
               width={260}
               height={260}
               alt="logo"
@@ -117,8 +116,9 @@ const Page: NextPage<Props> = ({
       <div className="max-w-6xl m-auto grid gap-8 grid-cols-3 my-12">
         {article.map((e, i) => (
           <BlogCard
-            image="https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/main.png"
+            image="/Cardano.png"
             title={e.frontMatter.title}
+            slug={e.slug}
             key={i}
           />
         ))}
@@ -126,7 +126,7 @@ const Page: NextPage<Props> = ({
       <div className="my-12 text-center">
         <Pagination pages={pages} current_page={current_page} />
       </div>
-    </div>
+    </Layout>
   );
 };
 

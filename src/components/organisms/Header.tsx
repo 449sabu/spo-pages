@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Navigation = () => {
+const Header = () => {
   return (
     <div className="max-h-20">
       <div className="max-w-4xl m-auto flex justify-between p-4">
@@ -17,4 +17,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Header;

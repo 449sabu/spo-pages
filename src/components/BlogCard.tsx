@@ -4,10 +4,11 @@ import Link from 'next/link';
 type Props = {
   image: string;
   title: string;
+  slug: string;
 };
-const BlogCard = ({ image, title }: Props) => {
+const BlogCard = ({ image, title, slug }: Props) => {
   return (
-    <Link href="">
+    <Link href={`/blog/${slug}`}>
       <Image
         alt="Blog Image"
         width={1200}

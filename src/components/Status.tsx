@@ -104,7 +104,7 @@ const Status = ({ pool_information }: Props) => {
           </div>
 
           <div className="mx-auto flex max-w-screen-sm items-center justify-center my-12">
-            <div className="w-full rounded-md bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 p-1">
+            <div className="w-full rounded-md bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400 p-1">
               <div className=" h-full w-full bg-white p-4 text-start md:text-center">
                 <p className="">Ticker : {pool_information.meta_json.ticker}</p>
                 <p className="pt-2 break-words">

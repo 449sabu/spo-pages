@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import CardanoLogo from '../../public/Cardano-RGB_Logo-Icon-White.png';
 import StakingButton from '@/components/StakingButton';
 type Props = {
   bgColor: string;
@@ -19,7 +18,7 @@ const Hero = ({ bgColor, pool_information }: Props) => {
         </div>
         <div className="m-auto invisible md:visible">
           <Image
-            src={CardanoLogo}
+            src="/Cardano-Logo-White.png"
             width={260}
             height={260}
             alt="logo"
