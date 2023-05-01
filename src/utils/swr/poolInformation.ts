@@ -18,11 +18,7 @@ export const useMetadata = (
 ): SWRResponse<Array<PoolInformation>> => {
   return useSWR(
     'PoolInformation',
-    () =>
-      PoolInformation(
-        // 'https://api.koios.rest/api/v0/pool_info',
-        fallbackData[0].pool_id_bech32,
-      ),
+    () => PoolInformation(fallbackData[0].pool_id_bech32),
     {
       fallbackData,
       revalidateOnMount: true,

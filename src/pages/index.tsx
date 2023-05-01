@@ -15,7 +15,9 @@ type Props = {
 
 export const getStaticProps: GetStaticProps = async () => {
   const configuration = readConfig();
-  const poolInformation = await PoolInformation(process.env.POOL_ID || '');
+  const poolInformation = await PoolInformation(
+    process.env.NEXT_PUBLIC_POOL_ID || '',
+  );
   const metadata = await fetcher(poolInformation[0].meta_url || '');
   const exMetadata = await fetcher(metadata.extended || '');
 

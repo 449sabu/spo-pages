@@ -5,6 +5,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import CardanoLogo from '../../../../public/Cardano-RGB_Logo-Icon-White.png';
+import BlogCard from '@/components/BlogCard';
 import Pagination from '@/components/Pagination';
 import { readConfig } from '@/utils/config';
 
@@ -100,9 +101,6 @@ const Page: NextPage<Props> = ({
               {configuration.blog.title}
             </h1>
             <p className="pb-4">{configuration.blog.description}</p>
-            <button className="bg-orange-300 py-2 px-4 rounded-full w-44">
-              Start Staking
-            </button>
           </div>
           <div className="m-auto invisible md:visible">
             <Image
@@ -116,24 +114,18 @@ const Page: NextPage<Props> = ({
         </div>
         <div className={`${bgColor} wave`}></div>
       </div>
-      <div className="max-w-4xl m-auto grid gap-8 grid-cols-1 grid-rows-5 my-12">
+      <div className="max-w-6xl m-auto grid gap-8 grid-cols-3 my-12">
         {article.map((e, i) => (
-          <Link key={i} href={`/blog/${e.slug}`} className="flex">
-            <Image
-              className="rounded-md"
-              src="https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/main.png"
-              width={300}
-              height={300}
-              alt={e.frontMatter.title}
-            />
-            <div className="pl-12">
-              <p className="text-2xl">{e.frontMatter.title}</p>
-              <p className="text-xl">{e.frontMatter.description}</p>
-            </div>
-          </Link>
+          <BlogCard
+            image="https://raw.githubusercontent.com/449sabu/zenn-posts/main/images/ogp-image/main.png"
+            title={e.frontMatter.title}
+            key={i}
+          />
         ))}
       </div>
-      <Pagination pages={pages} current_page={current_page} />
+      <div className="my-12 text-center">
+        <Pagination pages={pages} current_page={current_page} />
+      </div>
     </div>
   );
 };

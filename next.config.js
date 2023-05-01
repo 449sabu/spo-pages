@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'gerowallet.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
   webpack: function (config, options) {

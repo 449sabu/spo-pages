@@ -1,6 +1,6 @@
 import { Dialog, Transition, Tab } from '@headlessui/react';
 import type { AccountInfo } from '@meshsdk/core';
-import { KoiosProvider } from '@meshsdk/core';
+import { KoiosProvider, Transaction } from '@meshsdk/core';
 import {
   useRewardAddress,
   useWallet,
@@ -14,7 +14,7 @@ function classNames(...classes: any) {
 }
 
 const StakingButton = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   function closeModal() {
     setIsOpen(false);
   }
@@ -29,7 +29,7 @@ const StakingButton = () => {
         <button
           type="button"
           onClick={openModal}
-          className="rounded-full bg-orange-400 bg-opacity-80 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="rounded-full bg-orange-400 px-4 py-2 text-sm font-medium text-white hover:bg-orange-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
           ステーキングを始める
         </button>
@@ -145,7 +145,7 @@ const WalletList = () => {
 };
 
 const Delegate = () => {
-  const tx = useWalletTx();
+  // const tx = useWalletTx();
   const { wallet } = useWallet();
   const rewardAddress = useRewardAddress();
   const [error, setError] = useState<unknown>();
@@ -155,6 +155,8 @@ const Delegate = () => {
   const [done, setDone] = useState(false);
 
   const Koios = new KoiosProvider('api');
+  const tx = new Transaction({ initiator: wallet });
+
   const onCheck = (reword_address: string) =>
     Koios.fetchAccountInfo(reword_address);
 
@@ -180,7 +182,9 @@ const Delegate = () => {
     setDone(false);
     try {
       if (rewardAddress) {
-        const unsignedTx = await tx.delegateStake(rewardAddress, '').build();
+        const unsignedTx = await tx
+          .delegateStake(rewardAddress, process.env.NEXT_PUBLIC_POOL_ID!)
+          .build();
 
         const signedTx = await wallet.signTx(unsignedTx);
         const txHash = await wallet.submitTx(signedTx);
@@ -201,12 +205,12 @@ const Delegate = () => {
       if (rewardAddress) {
         const unsignedTx = await tx
           .registerStake(rewardAddress)
-          .delegateStake(rewardAddress, '')
+          .delegateStake(rewardAddress, process.env.NEXT_PUBLIC_POOL_ID!)
           .build();
 
         const signedTx = await wallet.signTx(unsignedTx);
         const txHash = await wallet.submitTx(signedTx);
-        console.log('txHash', txHash);
+        // console.log('txHash', txHash);
         setDone(true);
       }
     } catch (error) {

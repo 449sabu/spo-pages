@@ -15,9 +15,6 @@ const Hero = ({ bgColor, pool_information }: Props) => {
             {pool_information.meta_json.name}
           </h1>
           <p className="pb-4">{pool_information.meta_json.description}</p>
-          <button className="bg-orange-300 py-2 px-4 rounded-full w-44">
-            Start Staking
-          </button>
           <StakingButton />
         </div>
         <div className="m-auto invisible md:visible">
