@@ -42,6 +42,9 @@
 .candy {
   @apply bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400
 }
+.mint {
+  @apply bg-gradient-to-r from-yellow-200 via-green-200 to-green-300
+}
 
 .wave {
   overflow: hidden;
