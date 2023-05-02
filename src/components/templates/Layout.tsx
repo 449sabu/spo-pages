@@ -4,14 +4,25 @@ import Header from '@/components/organisms/Header';
 interface LayoutProps {
   children: React.ReactNode;
   footer: SiteConfig['footer'];
+  poolInformation: PoolInformation;
+  exMetadata?: ExtendedMetadata;
 }
 
-const Layout = ({ children, footer }: LayoutProps) => {
+const Layout = ({
+  children,
+  footer,
+  poolInformation,
+  exMetadata,
+}: LayoutProps) => {
   return (
     <>
       <Header />
       <main>{children}</main>
-      <Footer footer_data={footer} />
+      <Footer
+        footer_data={footer}
+        poolInformation={poolInformation}
+        exMetadata={exMetadata}
+      />
     </>
   );
 };

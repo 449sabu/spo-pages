@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import StakingButton from '@/components/StakingButton';
+import StakingButton from '@/components/modecules/StakingButton';
 type Props = {
   bgColor: string;
   pool_information: PoolInformation;

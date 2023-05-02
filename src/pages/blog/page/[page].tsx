@@ -4,9 +4,11 @@ import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import BlogCard from '@/components/BlogCard';
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/modecules/Pagination';
 import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
+import { fetcher } from '@/utils/fetcher';
+import { PoolInformation } from '@/utils/swr/poolInformation';
 
 interface Params extends ParsedUrlQuery {
   page: string;
@@ -20,6 +22,8 @@ interface Props {
   pages: number[];
   current_page: number;
   configuration: SiteConfig;
+  poolInformation: PoolInformation[];
+  exMetadata: ExtendedMetadata;
   // topics: string[];
 }
 
@@ -69,8 +73,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     PAGE_SIZE * current_page,
   );
 
-  // configuration
   const configuration = readConfig();
+  const poolInformation = await PoolInformation(
+    process.env.NEXT_PUBLIC_POOL_ID || '',
+  );
+  const metadata = await fetcher(poolInformation[0].meta_url || '');
+  const exMetadata = await fetcher(metadata.extended || '');
 
   return {
     props: {
@@ -78,7 +86,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       pages,
       current_page,
       configuration,
-      // topics,
+      poolInformation,
+      exMetadata,
     },
   };
 };
@@ -88,11 +97,17 @@ const Page: NextPage<Props> = ({
   pages,
   current_page,
   configuration,
+  poolInformation,
+  exMetadata,
 }) => {
   const bgColor = 'bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400';
 
   return (
-    <Layout footer={configuration.footer}>
+    <Layout
+      footer={configuration.footer}
+      poolInformation={poolInformation[0]}
+      exMetadata={exMetadata}
+    >
       <div className={`${bgColor}`}>
         <div className="h-80 md:h-96 max-w-4xl m-auto md:grid md:grid-cols-2">
           <div className="m-4 flex flex-col justify-center">

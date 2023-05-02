@@ -1,4 +1,4 @@
-type ExtendedMetadata = {
+interface ExtendedMetadata {
   verification?: string;
   info?: {
     url_png_icon_64x64?: string;
@@ -29,5 +29,5 @@ type ExtendedMetadata = {
       server?: string;
       company?: string;
     };
-  };
-};
+  } | null;
+}

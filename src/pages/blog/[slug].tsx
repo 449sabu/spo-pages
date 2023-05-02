@@ -4,6 +4,8 @@ import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
+import { fetcher } from '@/utils/fetcher';
+import { PoolInformation } from '@/utils/swr/poolInformation';
 
 interface Params extends ParsedUrlQuery {
   page: string;
@@ -13,6 +15,8 @@ type Props = {
   frontMatter: FrontMatter;
   content: string;
   configuration: SiteConfig;
+  poolInformation: PoolInformation[];
+  exMetadata: ExtendedMetadata;
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -36,6 +40,11 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   const { data, content } = matter(file);
 
   const configuration = readConfig();
+  const poolInformation = await PoolInformation(
+    process.env.NEXT_PUBLIC_POOL_ID || '',
+  );
+  const metadata = await fetcher(poolInformation[0].meta_url || '');
+  const exMetadata = await fetcher(metadata.extended || '');
 
   return {
     props: {
@@ -43,13 +52,25 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       content,
       // article: ""
       configuration,
+      poolInformation,
+      exMetadata,
     },
   };
 };
 
-const Article: NextPage<Props> = ({ frontMatter, content, configuration }) => {
+const Article: NextPage<Props> = ({
+  frontMatter,
+  content,
+  configuration,
+  poolInformation,
+  exMetadata,
+}) => {
   return (
-    <Layout footer={configuration.footer}>
+    <Layout
+      footer={configuration.footer}
+      poolInformation={poolInformation[0]}
+      exMetadata={exMetadata}
+    >
       <h1>{frontMatter.title}</h1>
       <div>{content}</div>
     </Layout>

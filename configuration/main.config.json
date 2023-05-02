@@ -23,6 +23,18 @@
         "url": "https://cardanofoundation.org/"
       }
     ]
+  },
+  {
+    "title": "Services & Tools",
+    "data": [
+      {
+        "name": "SPO Pages",
+        "url": "https://github.com/449sabu/spo-pages"
+      },      {
+        "name": "Documentation",
+        "url": "https://"
+      }
+    ]
   }
   ]
 }
