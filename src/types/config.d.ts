@@ -1,4 +1,5 @@
 interface SiteConfig {
+  theme: string;
   blog: {
     enable: boolean;
     title: string;

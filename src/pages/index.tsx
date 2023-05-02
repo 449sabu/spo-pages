@@ -12,10 +12,13 @@ type Props = {
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
   configuration: SiteConfig;
+  theme: string;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
   const configuration = readConfig();
+  const theme = configuration.theme;
+
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
   );
@@ -27,6 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
       poolInformation,
       exMetadata,
       configuration,
+      theme,
     },
   };
 };
@@ -35,9 +39,9 @@ const Home: NextPage<Props> = ({
   poolInformation,
   configuration,
   exMetadata,
+  theme,
 }) => {
   const { mutate } = useMetadata(poolInformation);
-  const bgColor = 'bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400';
 
   return (
     <Layout
@@ -45,9 +49,9 @@ const Home: NextPage<Props> = ({
       poolInformation={poolInformation[0]}
       exMetadata={exMetadata}
     >
-      <Hero bgColor={bgColor} pool_information={poolInformation[0]} />
-      <div className={`${bgColor} wave`}></div>
-      <Status pool_information={poolInformation[0]} />
+      <Hero theme={theme} pool_information={poolInformation[0]} />
+      <div className={`${theme} wave`}></div>
+      <Status theme={theme} pool_information={poolInformation[0]} />
       {configuration.blog.enable ? <Blog /> : null}
     </Layout>
   );

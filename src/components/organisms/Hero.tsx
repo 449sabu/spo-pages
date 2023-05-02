@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import StakingButton from '@/components/modecules/StakingButton';
 type Props = {
-  bgColor: string;
+  theme: string;
   pool_information: PoolInformation;
 };
 
-const Hero = ({ bgColor, pool_information }: Props) => {
+const Hero = ({ theme, pool_information }: Props) => {
   return (
-    <div className={`${bgColor}`}>
+    <div className={`${theme}`}>
       <div className="h-80 md:h-96 max-w-4xl m-auto md:grid md:grid-cols-2">
         <div className="m-4 flex flex-col justify-center">
           <h1 className="text-4xl md:text-5xl font-bold pb-4">

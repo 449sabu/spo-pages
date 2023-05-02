@@ -30,6 +30,18 @@
     bg-[url('../../public/wave.svg')]
   } */
 }
+.sunset {
+  @apply bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500
+}
+.peach {
+  @apply bg-gradient-to-r from-red-200 via-red-300 to-yellow-200
+}
+.oceanic {
+  @apply bg-gradient-to-r from-green-300 via-blue-500 to-purple-600
+}
+.candy {
+  @apply bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400
+}
 
 .wave {
   overflow: hidden;

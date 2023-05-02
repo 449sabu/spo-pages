@@ -2,9 +2,10 @@ import { calculateADA } from '@/utils/calculateADA';
 
 type Props = {
   pool_information: PoolInformation;
+  theme: string;
 };
 
-const Status = ({ pool_information }: Props) => {
+const Status = ({ pool_information, theme }: Props) => {
   return (
     <div className={`max-w-4xl m-auto pt-4`}>
       <div className="container my-24 px-6 mx-auto">
@@ -104,7 +105,7 @@ const Status = ({ pool_information }: Props) => {
           </div>
 
           <div className="mx-auto flex max-w-screen-sm items-center justify-center my-12">
-            <div className="w-full rounded-md bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400 p-1">
+            <div className={`${theme} w-full rounded-md p-1`}>
               <div className=" h-full w-full bg-white p-4 text-start md:text-center">
                 <p className="">Ticker : {pool_information.meta_json.ticker}</p>
                 <p className="pt-2 break-words">

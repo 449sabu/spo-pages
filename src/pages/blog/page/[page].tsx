@@ -22,9 +22,9 @@ interface Props {
   pages: number[];
   current_page: number;
   configuration: SiteConfig;
+  theme: string;
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
-  // topics: string[];
 }
 
 const PAGE_SIZE = 5;
@@ -74,6 +74,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   );
 
   const configuration = readConfig();
+  const theme = configuration.theme;
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
   );
@@ -86,6 +87,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       pages,
       current_page,
       configuration,
+      theme,
       poolInformation,
       exMetadata,
     },
@@ -97,18 +99,17 @@ const Page: NextPage<Props> = ({
   pages,
   current_page,
   configuration,
+  theme,
   poolInformation,
   exMetadata,
 }) => {
-  const bgColor = 'bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400';
-
   return (
     <Layout
       configuration={configuration}
       poolInformation={poolInformation[0]}
       exMetadata={exMetadata}
     >
-      <div className={`${bgColor}`}>
+      <div className={`${theme}`}>
         <div className="h-80 md:h-96 max-w-4xl m-auto md:grid md:grid-cols-2">
           <div className="m-4 flex flex-col justify-center">
             <h1 className="text-4xl md:text-5xl font-bold pb-4">
@@ -126,7 +127,7 @@ const Page: NextPage<Props> = ({
             />
           </div>
         </div>
-        <div className={`${bgColor} wave`}></div>
+        <div className={`${theme} wave`}></div>
       </div>
       <div className="max-w-6xl lg:m-auto lg:my-12 grid gap-8 lg:grid-cols-3 m-4">
         {article.map((e, i) => (
