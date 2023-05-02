@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import BlogCard from './BlogCard';
+import BlogCard from '../atoms/BlogCard';
 
 const Blog = () => {
   const image =
@@ -11,9 +11,9 @@ const Blog = () => {
         BLOG
       </h1>
       <div className="grid grid-col md:grid-cols-3 gap-4">
-        <BlogCard image={image} title={title} slug="" />
-        <BlogCard image={image} title={title} slug="" />
-        <BlogCard image={image} title={title} slug="" />
+        <BlogCard image={'/Cardano.png'} title={title} slug="" />
+        <BlogCard image={'/Cardano.png'} title={title} slug="" />
+        <BlogCard image={'/Cardano.png'} title={title} slug="" />
       </div>
       <Link
         href="/blog/page/1"

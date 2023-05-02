@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 
-import Blog from '@/components/Blog';
+import Blog from '@/components/organisms/Blog';
 import Hero from '@/components/organisms/Hero';
 import Status from '@/components/organisms/Status';
 import Layout from '@/components/templates/Layout';
@@ -41,14 +41,14 @@ const Home: NextPage<Props> = ({
 
   return (
     <Layout
-      footer={configuration.footer}
+      configuration={configuration}
       poolInformation={poolInformation[0]}
       exMetadata={exMetadata}
     >
       <Hero bgColor={bgColor} pool_information={poolInformation[0]} />
       <div className={`${bgColor} wave`}></div>
       <Status pool_information={poolInformation[0]} />
-      <Blog />
+      {configuration.blog.enable ? <Blog /> : null}
     </Layout>
   );
 };

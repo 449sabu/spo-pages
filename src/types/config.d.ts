@@ -1,6 +1,6 @@
 interface SiteConfig {
-  theme: string | undefined | null;
   blog: {
+    enable: boolean;
     title: string;
     description: string;
   };

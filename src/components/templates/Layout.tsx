@@ -3,23 +3,23 @@ import Header from '@/components/organisms/Header';
 
 interface LayoutProps {
   children: React.ReactNode;
-  footer: SiteConfig['footer'];
+  configuration: SiteConfig;
   poolInformation: PoolInformation;
   exMetadata?: ExtendedMetadata;
 }
 
 const Layout = ({
   children,
-  footer,
+  configuration,
   poolInformation,
   exMetadata,
 }: LayoutProps) => {
   return (
     <>
-      <Header />
+      <Header configuration={configuration} />
       <main>{children}</main>
       <Footer
-        footer_data={footer}
+        footer_data={configuration.footer}
         poolInformation={poolInformation}
         exMetadata={exMetadata}
       />

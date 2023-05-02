@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-import BlogCard from '@/components/BlogCard';
+import BlogCard from '@/components/atoms/BlogCard';
 import Pagination from '@/components/modecules/Pagination';
 import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
@@ -104,7 +104,7 @@ const Page: NextPage<Props> = ({
 
   return (
     <Layout
-      footer={configuration.footer}
+      configuration={configuration}
       poolInformation={poolInformation[0]}
       exMetadata={exMetadata}
     >
@@ -128,7 +128,7 @@ const Page: NextPage<Props> = ({
         </div>
         <div className={`${bgColor} wave`}></div>
       </div>
-      <div className="max-w-6xl m-auto grid gap-8 grid-cols-3 my-12">
+      <div className="max-w-6xl lg:m-auto lg:my-12 grid gap-8 lg:grid-cols-3 m-4">
         {article.map((e, i) => (
           <BlogCard
             image="/Cardano.png"
