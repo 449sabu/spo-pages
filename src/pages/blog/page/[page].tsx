@@ -134,6 +134,7 @@ const Page: NextPage<Props> = ({
           <BlogCard
             image="/Cardano.png"
             title={e.frontMatter.title}
+            date={e.frontMatter.date}
             slug={e.slug}
             key={i}
           />
