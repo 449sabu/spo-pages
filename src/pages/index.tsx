@@ -1,5 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 
+import NextSeo from '@/components/atoms/NextSeo';
 import Blog from '@/components/organisms/Blog';
 import Hero from '@/components/organisms/Hero';
 import Status from '@/components/organisms/Status';
@@ -44,16 +45,19 @@ const Home: NextPage<Props> = ({
   const { mutate } = useMetadata(poolInformation);
 
   return (
-    <Layout
-      configuration={configuration}
-      poolInformation={poolInformation[0]}
-      exMetadata={exMetadata}
-    >
-      <Hero theme={theme} pool_information={poolInformation[0]} />
-      <div className={`${theme} wave`}></div>
-      <Status theme={theme} pool_information={poolInformation[0]} />
-      {configuration.blog.enable ? <Blog /> : null}
-    </Layout>
+    <>
+      <NextSeo poolInformation={poolInformation[0]} />
+      <Layout
+        configuration={configuration}
+        poolInformation={poolInformation[0]}
+        exMetadata={exMetadata}
+      >
+        <Hero theme={theme} pool_information={poolInformation[0]} />
+        <div className={`${theme} wave`}></div>
+        <Status theme={theme} pool_information={poolInformation[0]} />
+        {configuration.blog.enable ? <Blog /> : null}
+      </Layout>
+    </>
   );
 };
 

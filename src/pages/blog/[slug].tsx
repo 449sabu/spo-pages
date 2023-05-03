@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
+import { NextSeo } from 'next-seo';
 import BreadCrumb from '@/components/modecules/BreadCrumb';
 import BlogLayout from '@/components/templates/BlogLayout';
 import Layout from '@/components/templates/Layout';
@@ -70,36 +71,56 @@ const Article: NextPage<Props> = ({
   exMetadata,
 }) => {
   return (
-    <Layout
-      configuration={configuration}
-      poolInformation={poolInformation[0]}
-      exMetadata={exMetadata}
-    >
-      <BlogLayout>
-        <div>
-          <BreadCrumb title={frontMatter.title} />
-          <h1 className="py-8 text-3xl font-bold">{frontMatter.title}</h1>
-          {frontMatter.image ? (
-            <Image
-              src={frontMatter.image}
-              height={630}
-              width={1200}
-              alt={frontMatter.title}
-              className="pb-8"
-            />
-          ) : (
-            <Image
-              src="/cardano.png"
-              height={630}
-              width={1200}
-              alt={frontMatter.title}
-              className="pb-8"
-            />
-          )}
-          <div dangerouslySetInnerHTML={{ __html: html }} className="prose" />
-        </div>
-      </BlogLayout>
-    </Layout>
+    <>
+      <NextSeo
+        title={frontMatter.title}
+        description={frontMatter.description}
+        openGraph={{
+          type: 'website',
+          // url: `http:localhost:3000/posts/${slug}`,
+          title: frontMatter.title,
+          description: frontMatter.description,
+          images: [
+            {
+              url: `https://localhost:3000/${frontMatter.image}`,
+              width: 1200,
+              height: 630,
+              alt: frontMatter.title,
+            },
+          ],
+        }}
+      />
+      <Layout
+        configuration={configuration}
+        poolInformation={poolInformation[0]}
+        exMetadata={exMetadata}
+      >
+        <BlogLayout>
+          <div>
+            <BreadCrumb title={frontMatter.title} />
+            <h1 className="py-8 text-3xl font-bold">{frontMatter.title}</h1>
+            {frontMatter.image ? (
+              <Image
+                src={frontMatter.image}
+                height={630}
+                width={1200}
+                alt={frontMatter.title}
+                className="pb-8"
+              />
+            ) : (
+              <Image
+                src="/cardano.png"
+                height={630}
+                width={1200}
+                alt={frontMatter.title}
+                className="pb-8"
+              />
+            )}
+            <div dangerouslySetInnerHTML={{ __html: html }} className="prose" />
+          </div>
+        </BlogLayout>
+      </Layout>
+    </>
   );
 };
 
