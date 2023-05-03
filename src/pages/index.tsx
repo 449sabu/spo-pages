@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 
-import NextSeo from '@/components/atoms/NextSeo';
+import { NextSeo } from 'next-seo';
 import Blog from '@/components/organisms/Blog';
 import Hero from '@/components/organisms/Hero';
 import Status from '@/components/organisms/Status';
@@ -46,7 +46,24 @@ const Home: NextPage<Props> = ({
 
   return (
     <>
-      <NextSeo poolInformation={poolInformation[0]} />
+      <NextSeo
+        title={poolInformation[0].meta_json.name}
+        description={poolInformation[0].meta_json.description}
+        openGraph={{
+          type: 'website',
+          url: `https://${process.env.VERCEL_URL}`,
+          title: poolInformation[0].meta_json.name,
+          description: poolInformation[0].meta_json.description,
+          images: [
+            {
+              url: `https://${process.env.VERCEL_URL}/cardano.png`,
+              width: 1200,
+              height: 630,
+              alt: poolInformation[0].meta_json.name,
+            },
+          ],
+        }}
+      />
       <Layout
         configuration={configuration}
         poolInformation={poolInformation[0]}
