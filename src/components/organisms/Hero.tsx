@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import StakingButton from '@/components/modecules/StakingButton';
+
 type Props = {
   theme: string;
   pool_information: PoolInformation;

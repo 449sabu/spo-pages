@@ -7,7 +7,7 @@ import Status from '@/components/organisms/Status';
 import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
-import { PoolInformation, useMetadata } from '@/utils/swr/poolInformation';
+import { PoolInformation } from '@/utils/swr/poolInformation';
 
 type Props = {
   poolInformation: PoolInformation[];
@@ -42,7 +42,7 @@ const Home: NextPage<Props> = ({
   exMetadata,
   theme,
 }) => {
-  const { mutate } = useMetadata(poolInformation);
+  // const { mutate } = useMetadata(poolInformation);
 
   return (
     <>

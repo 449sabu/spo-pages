@@ -1,12 +1,7 @@
 import { Dialog, Transition, Tab } from '@headlessui/react';
 import type { AccountInfo } from '@meshsdk/core';
 import { KoiosProvider, Transaction } from '@meshsdk/core';
-import {
-  useRewardAddress,
-  useWallet,
-  useWalletList,
-  useWalletTx,
-} from '@meshsdk/react';
+import { useRewardAddress, useWallet, useWalletList } from '@meshsdk/react';
 import { Fragment, useState, useEffect } from 'react';
 
 function classNames(...classes: any) {
@@ -145,10 +140,9 @@ const WalletList = () => {
 };
 
 const Delegate = () => {
-  // const tx = useWalletTx();
   const { wallet } = useWallet();
   const rewardAddress = useRewardAddress();
-  const [error, setError] = useState<unknown>();
+  // const [error, setError] = useState<unknown>();
   const [checking, setChecking] = useState(false);
   const [accountInfo, setAccountInfo] = useState<AccountInfo>();
   const [processing, setProcessing] = useState(false);
@@ -172,7 +166,8 @@ const Delegate = () => {
 
       setChecking(false);
     } catch (error) {
-      setError(error);
+      // setError(error)
+      console.log(error);
     }
   };
 
@@ -192,7 +187,8 @@ const Delegate = () => {
       }
     } catch (error) {
       console.error('error', error);
-      setError(error);
+      // setError(error);
+      console.log(error);
     }
     setProcessing(false);
   };
@@ -210,12 +206,13 @@ const Delegate = () => {
 
         const signedTx = await wallet.signTx(unsignedTx);
         const txHash = await wallet.submitTx(signedTx);
-        // console.log('txHash', txHash);
+        console.log('txHash', txHash);
         setDone(true);
       }
     } catch (error) {
       console.error('error', error);
-      setError(error);
+      // setError(error);
+      console.log(error);
     }
     setProcessing(false);
   };

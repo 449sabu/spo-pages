@@ -4,9 +4,10 @@ import Link from 'next/link';
 type Props = {
   image: string;
   title: string;
+  date: string;
   slug: string;
 };
-const BlogCard = ({ image, title, slug }: Props) => {
+const BlogCard = ({ image, title, slug, date }: Props) => {
   return (
     <Link href={`/blog/${slug}`}>
       <Image
@@ -18,7 +19,7 @@ const BlogCard = ({ image, title, slug }: Props) => {
       />
       <div className="p-4">
         <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
-          2023-05-01
+          {date}
         </p>
         <h3 className="text-lg font-medium text-gray-900">{title}</h3>
       </div>
