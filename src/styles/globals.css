@@ -45,6 +45,12 @@
 .mint {
   @apply bg-gradient-to-r from-yellow-200 via-green-200 to-green-300
 }
+.message {
+  @apply bg-orange-100 rounded-lg p-4 flex my-4
+}
+.msg-symbol {
+  @apply bg-orange-300 rounded-full flex items-center w-6 h-6 text-white font-bold justify-center m-1
+}
 
 .wave {
   overflow: hidden;

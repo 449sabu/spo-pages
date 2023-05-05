@@ -116,7 +116,10 @@ const Article: NextPage<Props> = ({
                 className="pb-8"
               />
             )}
-            <div dangerouslySetInnerHTML={{ __html: html }} className="prose" />
+            <div
+              dangerouslySetInnerHTML={{ __html: html }}
+              className="prose max-w-none"
+            />
           </div>
         </BlogLayout>
       </Layout>
