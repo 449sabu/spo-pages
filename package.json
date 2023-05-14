@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run format && next build",
+    "build": "npx playwright install && npm run format && next build",
     "start": "next start",
     "lint": "next lint --dir src",
     "format": "next lint --fix --dir src",
