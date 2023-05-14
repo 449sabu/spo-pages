@@ -1,15 +1,20 @@
 import fs from 'fs';
 import { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
+import mermaid from 'mermaid';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
+import { useEffect } from 'react';
 import BreadCrumb from '@/components/modecules/BreadCrumb';
 import BlogLayout from '@/components/templates/BlogLayout';
 import Layout from '@/components/templates/Layout';
 import { readConfig } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
-import { markdownToHtml } from '@/utils/markdownToHtml';
+import {
+  markdownToHtml,
+  markdownToIndex,
+} from '@/utils/markdownToHtml/markdownToHtml';
 import { PoolInformation } from '@/utils/swr/poolInformation';
 
 interface Params extends ParsedUrlQuery {
@@ -19,6 +24,7 @@ interface Params extends ParsedUrlQuery {
 type Props = {
   frontMatter: FrontMatter;
   html: string;
+  htmlIndex: string;
   configuration: SiteConfig;
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
@@ -44,6 +50,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   const file = fs.readFileSync(`articles/${params!.slug}.md`, 'utf-8');
   const { data, content } = matter(file);
   const html = await markdownToHtml(content);
+  const htmlIndex = await markdownToIndex(content);
 
   const configuration = readConfig();
   const poolInformation = await PoolInformation(
@@ -56,6 +63,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     props: {
       frontMatter: data,
       html,
+      htmlIndex,
       configuration,
       poolInformation,
       exMetadata,
@@ -66,10 +74,16 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 const Article: NextPage<Props> = ({
   frontMatter,
   html,
+  htmlIndex,
   configuration,
   poolInformation,
   exMetadata,
 }) => {
+  useEffect(() => {
+    mermaid.initialize({});
+    console.log('mermaid [slug]');
+  }, []);
+
   return (
     <>
       <NextSeo
@@ -95,7 +109,7 @@ const Article: NextPage<Props> = ({
         poolInformation={poolInformation[0]}
         exMetadata={exMetadata}
       >
-        <BlogLayout>
+        <BlogLayout blogIndex={htmlIndex}>
           <div>
             <BreadCrumb title={frontMatter.title} />
             <h1 className="py-8 text-3xl font-bold">{frontMatter.title}</h1>
@@ -118,7 +132,7 @@ const Article: NextPage<Props> = ({
             )}
             <div
               dangerouslySetInnerHTML={{ __html: html }}
-              className="prose max-w-none"
+              className="prose max-w-none prose-blue"
             />
           </div>
         </BlogLayout>

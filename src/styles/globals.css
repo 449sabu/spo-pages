@@ -46,10 +46,53 @@
   @apply bg-gradient-to-r from-yellow-200 via-green-200 to-green-300
 }
 .message {
-  @apply bg-orange-100 rounded-lg p-4 flex my-4
+  @apply bg-orange-100 rounded-lg p-4 flex my-8
 }
 .msg-symbol {
-  @apply bg-orange-300 rounded-full flex items-center w-6 h-6 text-white font-bold justify-center m-1
+  @apply bg-orange-300 rounded-full flex items-center w-7 h-7 text-white font-bold justify-center
+}
+.alert {
+  @apply bg-red-100 rounded-lg p-4 flex my-8
+}
+.alert-symbol {
+  @apply bg-red-300 rounded-full flex items-center w-7 h-7 text-white font-bold justify-center
+}
+.msg-content {
+  @apply mx-4
+}
+.details {
+  @apply px-4 py-2 rounded-lg border border-gray-200
+}
+.details-content {
+  @apply px-4 py-2
+}
+
+
+@layer components {
+  .prose  .mermaid-css{
+    @apply bg-white border border-gray-300 p-8 rounded-lg my-8
+  }
+  .prose img {
+    @apply m-auto
+  }
+}
+
+@layer components {
+  .index{
+    @apply m-4 p-4 rounded border-gray-200 border-4
+  }
+  .index .index-h1{
+    @apply pl-4 pb-2 hover:text-blue-400
+  }
+  .index .index-h2{
+    @apply pl-8 pb-2 hover:text-blue-400
+  }
+  .index .index-h3{
+    @apply pl-12 pb-2 hover:text-blue-400
+  }
+  .index .index-h4{
+    @apply pl-16 pb-2 hover:text-blue-400
+  }
 }
 
 .wave {

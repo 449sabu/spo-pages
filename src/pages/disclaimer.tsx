@@ -1,6 +1,6 @@
 import fs from 'fs';
 import type { GetStaticProps, NextPage } from 'next';
-import { markdownToHtml } from '@/utils/markdownToHtml';
+import { markdownToHtml } from '@/utils/markdownToHtml/markdownToHtml';
 
 type Props = {
   htmlContent: string;

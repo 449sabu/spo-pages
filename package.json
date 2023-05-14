@@ -22,13 +22,17 @@
     "autoprefixer": "10.4.14",
     "eslint-config-next": "13.3.0",
     "gray-matter": "^4.0.3",
+    "mermaid": "^10.1.0",
     "next": "^13.3.0",
     "next-seo": "^6.0.0",
+    "open-graph-scraper": "^6.0.0",
     "postcss": "8.4.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rehype-highlight": "^6.0.0",
+    "rehype-mermaidjs": "^1.0.1",
     "rehype-sanitize": "^5.0.1",
+    "rehype-slug": "^5.1.0",
     "rehype-stringify": "^9.0.3",
     "remark": "^14.0.2",
     "remark-breaks": "^3.0.2",
@@ -37,7 +41,9 @@
     "swr": "^2.1.5",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
-    "zenn-cli": "^0.1.143"
+    "unist-util-remove": "^3.1.1",
+    "zenn-cli": "^0.1.143",
+    "zenn-markdown-html": "^0.1.143"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
@@ -50,6 +56,9 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.7",
-    "typescript-eslint": "^0.0.1-alpha.0"
+    "typescript-eslint": "^0.0.1-alpha.0",
+    "unist-util-filter": "^4.0.1",
+    "unist-util-inspect": "^7.0.2",
+    "unist-util-select": "^4.0.3"
   }
 }
