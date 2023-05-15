@@ -28,12 +28,12 @@ export const removeHljsClassName: Plugin = () => {
       }
     });
     visit(tree, 'element', (node: Element) => {
-      if (is<Element>(node, { tagName: 'img' })) {
+      if (is<Element>(node, { tagName: 'svg' })) {
         const regex = /mermaid-\d+/;
         if (regex.test(node.properties!.id as string)) {
           node.properties = {
             ...node.properties,
-            className: 'mermaid-css',
+            className: 'mermaid-style',
           };
         }
       }

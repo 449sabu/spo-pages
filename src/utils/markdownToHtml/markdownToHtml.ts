@@ -29,7 +29,7 @@ export const markdownToHtml = async (markdownContent: string) => {
     .use(remarkSlug)
     // .use(rehypeMessage)
     .use(rehypeMermaid, {
-      strategy: 'img-svg',
+      // strategy: 'img-svg',
     })
     .use(rehypeHighlight, {
       detect: true,

@@ -69,8 +69,8 @@
 
 
 @layer components {
-  .prose  .mermaid-css{
-    @apply bg-white border border-gray-300 p-8 rounded-lg my-8
+  .prose  .mermaid-style{
+    @apply bg-white border border-gray-300 p-8 rounded-lg my-8 m-auto 
   }
   .prose img {
     @apply m-auto
