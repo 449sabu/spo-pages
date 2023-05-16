@@ -1,7 +1,5 @@
 import { GetStaticProps, NextPage } from 'next';
-
 import { NextSeo } from 'next-seo';
-import Blog from '@/components/organisms/Blog';
 import Hero from '@/components/organisms/Hero';
 import Status from '@/components/organisms/Status';
 import Layout from '@/components/templates/Layout';
@@ -72,7 +70,6 @@ const Home: NextPage<Props> = ({
         <Hero theme={theme} pool_information={poolInformation[0]} />
         <div className={`${theme} wave`}></div>
         <Status theme={theme} pool_information={poolInformation[0]} />
-        {configuration.blog.enable ? <Blog /> : null}
       </Layout>
     </>
   );

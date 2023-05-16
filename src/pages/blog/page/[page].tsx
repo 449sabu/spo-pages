@@ -49,25 +49,26 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 }) => {
   const current_page = Number(params!.page);
   const files = fs.readdirSync('articles');
+
   const posts = files.map((fileName) => {
     const slug = fileName.replace(/\.md$/, '');
     const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
     const { data } = matter(fileContent);
-
     return {
       frontMatter: data,
       slug,
     };
   });
+  const filter = posts.filter((post) => {
+    return post.frontMatter.published === true;
+  });
 
   const pages = range(1, Math.ceil(posts.length / PAGE_SIZE));
-
-  const sortedPosts = posts.sort((postA, postB) =>
+  const sortedPosts = filter.sort((postA, postB) =>
     new Date(postA.frontMatter.date) > new Date(postB.frontMatter.date)
       ? -1
       : 1,
   );
-
   const slicedPosts = sortedPosts.slice(
     PAGE_SIZE * (current_page - 1),
     PAGE_SIZE * current_page,
@@ -137,6 +138,7 @@ const Page: NextPage<Props> = ({
             date={e.frontMatter.date}
             slug={e.slug}
             key={i}
+            topics={e.frontMatter.topics}
           />
         ))}
       </div>

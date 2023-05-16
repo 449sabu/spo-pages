@@ -26,6 +26,7 @@ type Props = {
   configuration: SiteConfig;
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
+  topicList: string[];
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -57,6 +58,22 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   const metadata = await fetcher(poolInformation[0].meta_url || '');
   const exMetadata = await fetcher(metadata.extended || '');
 
+  const files = fs.readdirSync('articles');
+  const posts = files.map((fileName) => {
+    const slug = fileName.replace(/\.md$/, '');
+    const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
+    const { data } = matter(fileContent);
+    return {
+      frontMatter: data,
+      slug,
+    };
+  });
+  // topicsをフラットにして重複しているものをまとめる
+  const topics = posts.map((e) => e.frontMatter.topics).flat();
+  const topicList = topics.filter(
+    (elem, index) => topics.indexOf(elem) === index,
+  );
+
   return {
     props: {
       frontMatter: data,
@@ -65,6 +82,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       configuration,
       poolInformation,
       exMetadata,
+      topicList,
     },
   };
 };
@@ -76,6 +94,7 @@ const Article: NextPage<Props> = ({
   configuration,
   poolInformation,
   exMetadata,
+  topicList,
 }) => {
   return (
     <>
@@ -102,33 +121,39 @@ const Article: NextPage<Props> = ({
         poolInformation={poolInformation[0]}
         exMetadata={exMetadata}
       >
-        <BlogLayout blogIndex={htmlIndex}>
-          <div>
-            <BreadCrumb title={frontMatter.title} />
-            <h1 className="py-8 text-3xl font-bold">{frontMatter.title}</h1>
-            {frontMatter.image ? (
-              <Image
-                src={frontMatter.image}
-                height={630}
-                width={1200}
-                alt={frontMatter.title}
-                className="pb-8"
-              />
-            ) : (
-              <Image
-                src="/cardano.png"
-                height={630}
-                width={1200}
-                alt={frontMatter.title}
-                className="pb-8"
-              />
-            )}
-            <div
-              dangerouslySetInnerHTML={{ __html: html }}
-              className="prose max-w-none prose-blue"
-            />
-          </div>
-        </BlogLayout>
+        <div className="bg-blue-50">
+          <BlogLayout blog_index={htmlIndex} topic_list={topicList}>
+            <div>
+              <div className="px-4 lg:p-0">
+                <BreadCrumb title={frontMatter.title} />
+              </div>
+              <div className="bg-white rounded-lg drop-shadow-md px-4 md:px-6 my-4 lg:my-7">
+                <h1 className="py-8 text-3xl font-bold">{frontMatter.title}</h1>
+                {frontMatter.image ? (
+                  <Image
+                    src={frontMatter.image}
+                    height={630}
+                    width={1200}
+                    alt={frontMatter.title}
+                    className="pb-8"
+                  />
+                ) : (
+                  <Image
+                    src="/cardano.png"
+                    height={630}
+                    width={1200}
+                    alt={frontMatter.title}
+                    className="pb-8"
+                  />
+                )}
+                <div
+                  dangerouslySetInnerHTML={{ __html: html }}
+                  className="prose max-w-none prose-blue pb-4"
+                />
+              </div>
+            </div>
+          </BlogLayout>
+        </div>
       </Layout>
     </>
   );

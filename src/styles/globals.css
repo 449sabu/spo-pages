@@ -70,7 +70,7 @@
 
 @layer components {
   .prose  .mermaid-style{
-    @apply bg-white border border-gray-300 p-8 rounded-lg my-8 m-auto 
+    @apply bg-white border border-gray-300 py-4 p-1 md:p-8 rounded-lg my-8 m-auto 
   }
   .prose img {
     @apply m-auto
@@ -103,7 +103,7 @@
 
 @layer components {
   .index{
-    @apply m-4 p-4 rounded border-gray-200 border-4
+    @apply md:mx-4 mt-12 p-4 rounded-lg drop-shadow-md bg-white
   }
   .index .index-h1{
     @apply pl-4 pb-2 hover:text-blue-400
