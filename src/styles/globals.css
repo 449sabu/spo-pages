@@ -75,6 +75,30 @@
   .prose img {
     @apply m-auto
   }
+  .prose .link-card{
+    @apply flex  m-auto truncate border border-gray-200 rounded max-w-lg my-8
+  }
+  .prose .link-card-img{
+    @apply flex basis-44 grow max-w-[200px] shrink-[6]
+  }
+  .prose .link-card-img img{
+    @apply object-cover m-0
+  }
+  .prose .link-card-text{
+    @apply flex shrink grow-[4] basis-44 flex-col overflow-hidden px-4
+  }
+  .prose .link-card-text .link-card-title{
+    @apply overflow-hidden text-ellipsis whitespace-nowrap font-bold
+  }
+  .prose .link-card-text .link-card-url{
+    @apply min-h-[2em] overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[color:var(--secondary)]
+  }
+  .prose .task-list-item{
+    @apply m-0 list-none leading-10
+  }
+  .prose .task-list-item input {
+    @apply my-0 mr-2
+  }
 }
 
 @layer components {

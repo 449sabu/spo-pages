@@ -7,30 +7,34 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-import { detailsPlugin } from './detailsPlugin';
-// import { linkCardPlugin } from './linkCardPlugin';
-// import { remarkMermaid, rehypeMermaid } from "./mermaidPlugin";
+import { detailsPlugin } from '@/utils/markdownToHtml/detailsPlugin';
+import {
+  remarkLinkCard,
+  linkCardHandler,
+} from '@/utils/markdownToHtml/linkCardPlugin';
 import { messagePlugin } from '@/utils/markdownToHtml/messagePlugin';
 import {
   remarkIndex,
   rehypeIndex,
   removeHljsClassName,
   print,
-  rehypeMessage,
+  // rehypeMessage,
 } from '@/utils/markdownToHtml/unifiedPlugin';
 
 export const markdownToHtml = async (markdownContent: string) => {
   const result = await unified()
-    // .use(print)
     .use(remarkParse)
+    .use(remarkLinkCard)
     .use(remarkGfm)
     .use(remarkBreaks)
-    .use(remarkRehype)
+    .use(remarkRehype, {
+      handlers: {
+        linkcard: linkCardHandler,
+      },
+    })
     .use(remarkSlug)
     // .use(rehypeMessage)
-    .use(rehypeMermaid, {
-      // strategy: 'img-svg',
-    })
+    .use(rehypeMermaid)
     .use(rehypeHighlight, {
       detect: true,
     })

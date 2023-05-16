@@ -1,13 +1,10 @@
 import type { Element, Text } from 'hast';
-import type { Paragraph, Root, Content } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node } from 'unist';
 import { inspect } from 'unist-util-inspect';
 import { is } from 'unist-util-is';
 import { remove } from 'unist-util-remove';
-import { matches, select, selectAll } from 'unist-util-select';
 import { visit } from 'unist-util-visit';
-import type { VFileCompatible } from 'vfile';
 
 export const print: Plugin = () => {
   return (tree: Node) => {
@@ -16,7 +13,7 @@ export const print: Plugin = () => {
 };
 
 export const removeHljsClassName: Plugin = () => {
-  return (tree: Node, _file: VFileCompatible) => {
+  return (tree: Node) => {
     visit(tree, 'element', (node: Element) => {
       if (is<Element>(node, { tagName: 'code' })) {
         if (node.properties!.className as string[]) {
@@ -42,22 +39,20 @@ export const removeHljsClassName: Plugin = () => {
 };
 
 export const rehypeMessage = () => {
-  return (tree: Node, _file: VFileCompatible) => {
+  return (tree: Node) => {
     visit(tree, 'text', (node: Text, index: number, parent: Element) => {
       if (node.value === ':::: details detail') {
-        // console.log(parent);
         parent.children = [
           // ...parent.children,
           { type: 'text', value: 'aaaaaaa' },
         ];
       }
-      // console.log(node);
     });
   };
 };
 
 export const remarkIndex: Plugin = () => {
-  return (tree: Node, _file: VFileCompatible) => {
+  return (tree: Node) => {
     remove(tree, (node) => {
       return (
         node.type === 'code' ||
@@ -70,7 +65,7 @@ export const remarkIndex: Plugin = () => {
 };
 
 export const rehypeIndex: Plugin = () => {
-  return (tree: Node, _file: VFileCompatible) => {
+  return (tree: Node) => {
     visit(tree, 'element', (node: Element) => {
       if (is<Element>(node, { tagName: 'h1' })) {
         node.tagName = 'a';

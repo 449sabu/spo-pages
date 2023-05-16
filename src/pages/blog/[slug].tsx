@@ -1,11 +1,9 @@
 import fs from 'fs';
 import { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
-import mermaid from 'mermaid';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
-import { useEffect } from 'react';
 import BreadCrumb from '@/components/modecules/BreadCrumb';
 import BlogLayout from '@/components/templates/BlogLayout';
 import Layout from '@/components/templates/Layout';
@@ -79,11 +77,6 @@ const Article: NextPage<Props> = ({
   poolInformation,
   exMetadata,
 }) => {
-  useEffect(() => {
-    mermaid.initialize({});
-    console.log('mermaid [slug]');
-  }, []);
-
   return (
     <>
       <NextSeo

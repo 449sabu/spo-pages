@@ -1,7 +1,7 @@
-import type { Plugin } from 'unified';
+import type { Plugin, Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 
-export const messagePlugin: Plugin = () => {
+export const messagePlugin: Plugin = (): Transformer => {
   return (tree: any) => {
     // console.log('✅' + JSON.stringify(tree, null, 2));
     visit(tree, 'element', (node) => {
