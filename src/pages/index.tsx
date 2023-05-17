@@ -3,7 +3,7 @@ import { NextSeo } from 'next-seo';
 import Hero from '@/components/organisms/Hero';
 import Status from '@/components/organisms/Status';
 import Layout from '@/components/templates/Layout';
-import { readConfig } from '@/utils/config';
+import { readConfigFile } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
 import { PoolInformation } from '@/utils/swr/poolInformation';
 
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const configuration = readConfig();
+  const configuration = readConfigFile();
   const theme = configuration.theme;
 
   const poolInformation = await PoolInformation(

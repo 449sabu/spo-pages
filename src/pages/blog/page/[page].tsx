@@ -1,12 +1,16 @@
 import fs from 'fs';
 import { ParsedUrlQuery } from 'node:querystring';
-import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import BlogCard from '@/components/atoms/BlogCard';
 import Pagination from '@/components/modecules/Pagination';
 import Layout from '@/components/templates/Layout';
-import { readConfig } from '@/utils/config';
+import {
+  readArticles,
+  readConfigFile,
+  range,
+  createPagination,
+} from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
 import { PoolInformation } from '@/utils/swr/poolInformation';
 
@@ -27,14 +31,10 @@ interface Props {
   exMetadata: ExtendedMetadata;
 }
 
-const PAGE_SIZE = 5;
-const range = (start: number, end: number, length = end - start + 1) =>
-  Array.from({ length }, (_, i) => start + i);
-
 export const getStaticPaths: GetStaticPaths = async () => {
-  const files = fs.readdirSync('articles');
-  const count = files.length;
-  const paths = range(1, Math.ceil(count / PAGE_SIZE)).map((i) => ({
+  // const files = fs.readdirSync('articles').length;
+  const count = fs.readdirSync('articles').length;
+  const paths = range(1, Math.ceil(count / 6)).map((i) => ({
     params: { page: i.toString() },
   }));
 
@@ -48,33 +48,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   const current_page = Number(params!.page);
-  const files = fs.readdirSync('articles');
+  const articles = readArticles();
 
-  const posts = files.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, '');
-    const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
-    const { data } = matter(fileContent);
-    return {
-      frontMatter: data,
-      slug,
-    };
-  });
-  const filter = posts.filter((post) => {
-    return post.frontMatter.published === true;
-  });
+  // pagination
+  const pages = range(1, Math.ceil(articles.length / 6));
+  const slicedArticles = createPagination(articles, current_page);
 
-  const pages = range(1, Math.ceil(posts.length / PAGE_SIZE));
-  const sortedPosts = filter.sort((postA, postB) =>
-    new Date(postA.frontMatter.date) > new Date(postB.frontMatter.date)
-      ? -1
-      : 1,
-  );
-  const slicedPosts = sortedPosts.slice(
-    PAGE_SIZE * (current_page - 1),
-    PAGE_SIZE * current_page,
-  );
-
-  const configuration = readConfig();
+  const configuration = readConfigFile();
   const theme = configuration.theme;
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
@@ -84,7 +64,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
   return {
     props: {
-      article: slicedPosts,
+      article: slicedArticles,
       pages,
       current_page,
       configuration,

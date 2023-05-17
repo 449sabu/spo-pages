@@ -1,0 +1,9 @@
+---
+title: "11111"
+emoji: "👏"
+type: "tech" # tech: 技術記事 / idea: アイデア
+topics: ["zenn"]
+published: true
+date: "2023-05-02"
+image: "/Cardano.png"
+---

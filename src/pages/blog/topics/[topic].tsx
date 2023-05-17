@@ -1,10 +1,8 @@
-import fs from 'fs';
-import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import BlogCard from '@/components/atoms/BlogCard';
 import Hero from '@/components/organisms/Hero';
 import Layout from '@/components/templates/Layout';
-import { readConfig } from '@/utils/config';
+import { readConfigFile, readArticles, createTopics } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
 import { PoolInformation } from '@/utils/swr/poolInformation';
 
@@ -13,6 +11,7 @@ interface Props {
     frontMatter: FrontMatter;
     slug: string;
   }[];
+  topics: string[];
   pages: number[];
   current_page: number;
   configuration: SiteConfig;
@@ -20,25 +19,12 @@ interface Props {
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
 }
-export const getStaticPaths: GetStaticPaths = async () => {
-  // [page]とかぶっているのでutilsにまとめられる
-  const files = fs.readdirSync('articles');
-  const posts = files.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, '');
-    const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
-    const { data } = matter(fileContent);
-    return {
-      frontMatter: data,
-      slug,
-    };
-  });
 
-  // topicsをフラットにして重複しているものをまとめる
-  const topics = posts.map((e) => e.frontMatter.topics).flat();
-  const topicList = topics.filter(
-    (elem, index) => topics.indexOf(elem) === index,
-  );
-  const paths = topicList.map((topic) => ({ params: { topic } }));
+export const getStaticPaths: GetStaticPaths = async () => {
+  const articles = readArticles();
+  const topics = createTopics(articles);
+
+  const paths = topics.map((topic) => ({ params: { topic } }));
 
   return {
     paths,
@@ -47,27 +33,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // [page]とかぶっているのでutilsにまとめられる
-  const files = fs.readdirSync('articles');
-  const posts = files.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, '');
-    const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
-    const { data } = matter(fileContent);
-    return {
-      frontMatter: data,
-      slug,
-    };
-  });
-
-  // topicsをフラットにして重複しているものをまとめる
-  const topics = posts.map((e) => e.frontMatter.topics).flat();
-  const topicList = topics.filter(
-    (elem, index) => topics.indexOf(elem) === index,
-  );
-
   const topic = params!.topic;
 
-  const filteredPosts = posts.filter((article) => {
+  const articles = readArticles();
+  const topics = createTopics(articles);
+
+  const filteredPosts = articles.filter((article) => {
     return article.frontMatter.topics.includes(topic);
   });
 
@@ -77,7 +48,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       : 1,
   );
 
-  const configuration = readConfig();
+  const configuration = readConfigFile();
   const theme = configuration.theme;
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
@@ -89,7 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       article: sortedPosts,
       theme,
-      topicList,
+      topics,
       configuration,
       poolInformation,
       exMetadata,

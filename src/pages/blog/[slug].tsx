@@ -7,7 +7,7 @@ import { NextSeo } from 'next-seo';
 import BreadCrumb from '@/components/modecules/BreadCrumb';
 import BlogLayout from '@/components/templates/BlogLayout';
 import Layout from '@/components/templates/Layout';
-import { readConfig } from '@/utils/config';
+import { createTopics, readArticles, readConfigFile } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
 import {
   markdownToHtml,
@@ -26,7 +26,7 @@ type Props = {
   configuration: SiteConfig;
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
-  topicList: string[];
+  topics: string[];
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -51,28 +51,15 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   const html = await markdownToHtml(content);
   const htmlIndex = await markdownToIndex(content);
 
-  const configuration = readConfig();
+  const configuration = readConfigFile();
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
   );
   const metadata = await fetcher(poolInformation[0].meta_url || '');
   const exMetadata = await fetcher(metadata.extended || '');
-
-  const files = fs.readdirSync('articles');
-  const posts = files.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, '');
-    const fileContent = fs.readFileSync(`articles/${fileName}`, 'utf-8');
-    const { data } = matter(fileContent);
-    return {
-      frontMatter: data,
-      slug,
-    };
-  });
-  // topicsをフラットにして重複しているものをまとめる
-  const topics = posts.map((e) => e.frontMatter.topics).flat();
-  const topicList = topics.filter(
-    (elem, index) => topics.indexOf(elem) === index,
-  );
+  // topics
+  const articles = readArticles();
+  const topics = createTopics(articles);
 
   return {
     props: {
@@ -82,7 +69,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       configuration,
       poolInformation,
       exMetadata,
-      topicList,
+      topics,
     },
   };
 };
@@ -94,7 +81,7 @@ const Article: NextPage<Props> = ({
   configuration,
   poolInformation,
   exMetadata,
-  topicList,
+  topics,
 }) => {
   return (
     <>
@@ -122,7 +109,7 @@ const Article: NextPage<Props> = ({
         exMetadata={exMetadata}
       >
         <div className="bg-blue-50">
-          <BlogLayout blog_index={htmlIndex} topic_list={topicList}>
+          <BlogLayout blog_index={htmlIndex} topic_list={topics}>
             <div>
               <div className="px-4 lg:p-0">
                 <BreadCrumb title={frontMatter.title} />

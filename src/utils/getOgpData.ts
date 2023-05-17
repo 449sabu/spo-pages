@@ -22,15 +22,4 @@ export const getOgpData = async (url: string) => {
       icon: '',
     };
   });
-  // .catch((error) => {
-  // 	console.log(error);
-
-  // 	return {
-  // 		url: url,
-  // 		title: "",
-  // 		description: "",
-  // 		og: "",
-  // 		icon: "",
-  // 	};
-  // });
 };
