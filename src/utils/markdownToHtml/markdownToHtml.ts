@@ -7,6 +7,9 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
+// import type { Plugin } from 'unified';
+// import { inspect } from 'unist-util-inspect';
+
 import { detailsPlugin } from '@/utils/markdownToHtml/detailsPlugin';
 import {
   remarkLinkCard,
@@ -17,9 +20,14 @@ import {
   remarkIndex,
   rehypeIndex,
   removeHljsClassName,
-  print,
   // rehypeMessage,
 } from '@/utils/markdownToHtml/unifiedPlugin';
+
+// export const print: Plugin = () => {
+//   return (tree: Node) => {
+//     console.log(inspect(tree));
+//   };
+// };
 
 export const markdownToHtml = async (markdownContent: string) => {
   const result = await unified()

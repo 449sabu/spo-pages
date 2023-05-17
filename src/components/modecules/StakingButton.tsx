@@ -1,8 +1,7 @@
 import { Dialog, Transition, Tab } from '@headlessui/react';
-import type { AccountInfo } from '@meshsdk/core';
-import { KoiosProvider, Transaction } from '@meshsdk/core';
-import { useRewardAddress, useWallet, useWalletList } from '@meshsdk/react';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState } from 'react';
+import ConnectWallet from '../atoms/ConnectWallet';
+import DelegateStake from '../atoms/DelegateStake';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -95,11 +94,15 @@ const StakingButton = () => {
                       <Tab.Panels>
                         <Tab.Panel className="m-4">
                           <p>1, ウォレットを選択</p>
-                          <WalletList />
+                          <div className="h-20 m-6 ">
+                            <ConnectWallet />
+                          </div>
                           <p>
                             2. 内容の確認し、「ステーキングする」ボタンを押す
                           </p>
-                          <Delegate />
+                          <div className="h-20 m-6">
+                            <DelegateStake />
+                          </div>
                         </Tab.Panel>
                         <Tab.Panel className="m-4">作成中です。</Tab.Panel>
                       </Tab.Panels>
@@ -116,158 +119,3 @@ const StakingButton = () => {
 };
 
 export default StakingButton;
-
-const WalletList = () => {
-  const wallets = useWalletList();
-  const { connect } = useWallet();
-
-  return (
-    <div className="grid gap-2 grid-cols-3 my-4">
-      {wallets.map((e, i) => (
-        <div
-          key={i}
-          className="border-4 rounded-md flex justify-center p-2"
-          onClick={() => {
-            connect(e.name);
-          }}
-        >
-          <img src={e.icon} alt={e.name} className="h-8 w-8" />
-          <button className="ml-2">{e.name}</button>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const Delegate = () => {
-  const { wallet } = useWallet();
-  const rewardAddress = useRewardAddress();
-  // const [error, setError] = useState<unknown>();
-  const [checking, setChecking] = useState(false);
-  const [accountInfo, setAccountInfo] = useState<AccountInfo>();
-  const [processing, setProcessing] = useState(false);
-  const [done, setDone] = useState(false);
-
-  const Koios = new KoiosProvider('api');
-  const tx = new Transaction({ initiator: wallet });
-
-  const onCheck = (reword_address: string) =>
-    Koios.fetchAccountInfo(reword_address);
-
-  // Accountをチェックする
-  const checkAccountStatus = async () => {
-    try {
-      setChecking(true);
-
-      if (rewardAddress) {
-        const info = await onCheck(rewardAddress);
-        setAccountInfo(info);
-      }
-
-      setChecking(false);
-    } catch (error) {
-      // setError(error)
-      console.log(error);
-    }
-  };
-
-  // 委任先変更
-  const delegateStake = async () => {
-    setProcessing(true);
-    setDone(false);
-    try {
-      if (rewardAddress) {
-        const unsignedTx = await tx
-          .delegateStake(rewardAddress, process.env.NEXT_PUBLIC_POOL_ID!)
-          .build();
-
-        const signedTx = await wallet.signTx(unsignedTx);
-        const txHash = await wallet.submitTx(signedTx);
-        setDone(true);
-      }
-    } catch (error) {
-      console.error('error', error);
-      // setError(error);
-      console.log(error);
-    }
-    setProcessing(false);
-  };
-
-  // 委任登録
-  const registerAddress = async () => {
-    setProcessing(true);
-    setDone(false);
-    try {
-      if (rewardAddress) {
-        const unsignedTx = await tx
-          .registerStake(rewardAddress)
-          .delegateStake(rewardAddress, process.env.NEXT_PUBLIC_POOL_ID!)
-          .build();
-
-        const signedTx = await wallet.signTx(unsignedTx);
-        const txHash = await wallet.submitTx(signedTx);
-        console.log('txHash', txHash);
-        setDone(true);
-      }
-    } catch (error) {
-      console.error('error', error);
-      // setError(error);
-      console.log(error);
-    }
-    setProcessing(false);
-  };
-
-  useEffect(() => {
-    checkAccountStatus();
-  }, [rewardAddress]);
-
-  if (checking) {
-    return (
-      <button
-        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
-        disabled={true}
-      >
-        Checking...
-      </button>
-    );
-  }
-  if (processing) {
-    return (
-      <button
-        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
-        disabled={true}
-      >
-        Loading...
-      </button>
-    );
-  }
-  if (done) {
-    return (
-      <button
-        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
-        disabled={true}
-      >
-        委任済み
-      </button>
-    );
-  }
-  if (accountInfo?.active) {
-    return (
-      <button
-        className="border-4 rounded-md flex justify-center p-2 basis-1/2"
-        onClick={delegateStake}
-      >
-        委任する
-      </button>
-    );
-  }
-
-  return (
-    <button
-      className="border-4 rounded-md flex justify-center p-2"
-      onClick={registerAddress}
-    >
-      新しく委任する
-    </button>
-  );
-};

@@ -1,16 +1,9 @@
 import type { Element, Text } from 'hast';
 import type { Plugin } from 'unified';
 import type { Node } from 'unist';
-import { inspect } from 'unist-util-inspect';
 import { is } from 'unist-util-is';
 import { remove } from 'unist-util-remove';
 import { visit } from 'unist-util-visit';
-
-export const print: Plugin = () => {
-  return (tree: Node) => {
-    console.log(inspect(tree));
-  };
-};
 
 export const removeHljsClassName: Plugin = () => {
   return (tree: Node) => {
