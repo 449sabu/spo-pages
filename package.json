@@ -23,6 +23,7 @@
     "eslint-config-next": "13.3.0",
     "gray-matter": "^4.0.3",
     "next": "^13.3.0",
+    "next-mdx-remote": "^4.4.1",
     "next-seo": "^6.0.0",
     "open-graph-scraper": "^6.0.0",
     "postcss": "8.4.23",
