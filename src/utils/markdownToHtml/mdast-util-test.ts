@@ -1,4 +1,4 @@
-import type { Paragraph, Text, Link } from 'mdast';
+import type { Paragraph, Text, Link, Break } from 'mdast';
 import type { Node, Parent, Literal } from 'unist';
 
 function isObject(target: unknown): target is { [key: string]: unknown } {
@@ -36,6 +36,81 @@ export function isLink(node: unknown): node is Link {
   return isNode(node) && node.type === 'link';
 }
 
+// https://github.com/syntax-tree/mdast#break
+export const isBreak = (node: unknown): node is Break => {
+  return isNode(node) && node.type === 'break';
+};
+
+export const isMessage = (node: unknown): node is Paragraph => {
+  if (!isParagraph(node)) {
+    return false;
+  }
+
+  const { children } = node;
+  const firstChild = children[0];
+  if (!(isText(firstChild) && firstChild.value.startsWith(':::message'))) {
+    return false;
+  }
+
+  const lastChild = children[children.length - 1];
+  if (!(isText(lastChild) && lastChild.value.endsWith(':::'))) {
+    return false;
+  }
+
+  return true;
+};
+
+export const isAlert = (node: unknown): node is Paragraph => {
+  if (!isParagraph(node)) {
+    return false;
+  }
+
+  const { children } = node;
+  const firstChild = children[0];
+
+  if (
+    !(isText(firstChild) && firstChild.value.startsWith(':::message alert'))
+  ) {
+    return false;
+  }
+
+  const lastChild = children[children.length - 1];
+  if (!(isText(lastChild) && lastChild.value.endsWith(':::'))) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ *
+ * @param node
+ * @returns
+ */
+export const isDetails = (node: unknown): node is Paragraph => {
+  if (!isParagraph(node)) {
+    return false;
+  }
+
+  const { children } = node;
+  const firstChild = children[0];
+
+  if (!(isText(firstChild) && firstChild.value.startsWith(':::details'))) {
+    return false;
+  }
+  const lastChild = children[children.length - 1];
+  if (!(isText(lastChild) && lastChild.value.endsWith(':::'))) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ *
+ * @param node
+ * @returns
+ */
 export const isLinkCard = (node: unknown): node is Paragraph => {
   if (!isParagraph(node)) {
     return false;

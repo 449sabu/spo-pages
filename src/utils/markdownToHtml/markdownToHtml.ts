@@ -7,15 +7,24 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-// import type { Plugin } from 'unified';
-// import { inspect } from 'unist-util-inspect';
+import type { Plugin } from 'unified';
+import { inspect } from 'unist-util-inspect';
 
-import { detailsPlugin } from '@/utils/markdownToHtml/detailsPlugin';
+import {
+  detailsHandler,
+  remarkDetails,
+  remarkNestedDetails,
+} from '@/utils/markdownToHtml/detailsPlugin';
 import {
   remarkLinkCard,
   linkCardHandler,
 } from '@/utils/markdownToHtml/linkCardPlugin';
-import { messagePlugin } from '@/utils/markdownToHtml/messagePlugin';
+import {
+  remarkMessage,
+  messageHandler,
+  alertHandler,
+  remarkAlert,
+} from '@/utils/markdownToHtml/messagePlugin';
 import {
   remarkIndex,
   rehypeIndex,
@@ -23,21 +32,32 @@ import {
   // rehypeMessage,
 } from '@/utils/markdownToHtml/unifiedPlugin';
 
-// export const print: Plugin = () => {
-//   return (tree: Node) => {
-//     console.log(inspect(tree));
-//   };
-// };
+export const print = () => {
+  return (tree: Node) => {
+    console.log(inspect(tree));
+  };
+};
 
 export const markdownToHtml = async (markdownContent: string) => {
   const result = await unified()
     .use(remarkParse)
-    .use(remarkLinkCard)
-    .use(remarkGfm)
     .use(remarkBreaks)
+    .use(print)
+    .use([
+      // remarkNestedDetails,
+      remarkDetails,
+      remarkAlert,
+      remarkMessage,
+      remarkLinkCard,
+    ])
+
+    .use(remarkGfm)
     .use(remarkRehype, {
       handlers: {
         linkcard: linkCardHandler,
+        details: detailsHandler,
+        message: messageHandler,
+        alert: alertHandler,
       },
     })
     .use(remarkSlug)
@@ -48,7 +68,7 @@ export const markdownToHtml = async (markdownContent: string) => {
     })
     .use(removeHljsClassName)
     .use(rehypeStringify)
-    .use([detailsPlugin, messagePlugin])
+    // .use([detailsPlugin, messagePlugin])
     .process(markdownContent);
   return result.toString();
 };
