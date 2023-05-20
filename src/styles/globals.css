@@ -78,38 +78,6 @@
   .prose .task-list-item input {
     @apply my-0 mr-2
   }
-  /* details */
-  .prose .details {
-    @apply group-[&_summary::-webkit-details-marker]:hidden my-4
-  }
-  .prose .summary  {
-    @apply flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-3 text-gray-900 border
-  }
-  .prose .details-title {
-    @apply font-medium p-0 m-0
-  }
-  .prose .details-content {
-    @apply mt-4 px-4 leading-relaxed text-gray-700
-  }
-  .prose .details-svg {
-    @apply h-5 w-5 shrink-0 transition duration-300 group-open:-rotate-180
-  }
-  /* message,alert */
-  .prose .msg {
-    @apply bg-orange-100 rounded-lg p-4 flex my-8
-  }
-  .prose .msg-symbol {
-    @apply bg-orange-300 rounded-full flex items-center w-7 h-7 text-white font-bold justify-center
-  }
-  .prose .msg-content {
-    @apply mx-4
-  }
-  .prose .alert {
-    @apply bg-red-100 rounded-lg p-4 flex my-8
-  }
-  .prose .alert-symbol {
-    @apply bg-red-300 rounded-full flex items-center w-7 h-7 text-white font-bold justify-center
-  }
 }
 
 @layer components {

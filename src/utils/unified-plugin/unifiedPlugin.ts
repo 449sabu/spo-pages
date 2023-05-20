@@ -1,9 +1,16 @@
-import type { Element, Text } from 'hast';
+import type { Element } from 'hast';
 import type { Plugin } from 'unified';
 import type { Node } from 'unist';
+import { inspect } from 'unist-util-inspect';
 import { is } from 'unist-util-is';
 import { remove } from 'unist-util-remove';
 import { visit } from 'unist-util-visit';
+
+export const print = () => {
+  return (tree: Node) => {
+    console.log(inspect(tree));
+  };
+};
 
 export const removeHljsClassName: Plugin = () => {
   return (tree: Node) => {
@@ -26,19 +33,6 @@ export const removeHljsClassName: Plugin = () => {
             className: 'mermaid-style',
           };
         }
-      }
-    });
-  };
-};
-
-export const rehypeMessage = () => {
-  return (tree: Node) => {
-    visit(tree, 'text', (node: Text, index: number, parent: Element) => {
-      if (node.value === ':::: details detail') {
-        parent.children = [
-          // ...parent.children,
-          { type: 'text', value: 'aaaaaaa' },
-        ];
       }
     });
   };
