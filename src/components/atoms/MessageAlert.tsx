@@ -8,7 +8,7 @@ const MessageAlert: React.FC<MessageProps> = (props) => {
     return (
       <div
         role="alert"
-        className="rounded border-s-4 border-red-500 bg-red-50 p-4"
+        className="rounded border-s-4 border-red-500 bg-red-50 p-4 my-4"
       >
         <strong className="block font-medium text-red-800">
           {' '}
@@ -22,7 +22,7 @@ const MessageAlert: React.FC<MessageProps> = (props) => {
   return (
     <div
       role="alert"
-      className="rounded border-s-4 border-yellow-500 bg-yellow-50 p-4"
+      className="rounded border-s-4 border-yellow-500 bg-yellow-50 p-4 my-4"
     >
       <strong className="block font-medium text-yellow-800">
         {' '}

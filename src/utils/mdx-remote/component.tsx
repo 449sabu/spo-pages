@@ -4,7 +4,6 @@ import Details from '@/components/atoms/Details';
 import type { MessageProps } from '@/components/atoms/MessageAlert';
 import MessageAlert from '@/components/atoms/MessageAlert';
 import type { LinkCardProps } from '@/components/organisms/LinkCard';
-
 import LinkCard from '@/components/organisms/LinkCard';
 
 type ProvidedComponents = MDXComponents & {
