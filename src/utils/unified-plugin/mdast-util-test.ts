@@ -112,7 +112,7 @@ export const isDetails = (node: unknown): node is Paragraph => {
 };
 
 /**
- *
+ * ベタ張りのURL
  * @param node
  * @returns
  */
@@ -137,5 +137,15 @@ export const isLinkCard = (node: unknown): node is Paragraph => {
     return false;
   }
 
+  return true;
+};
+
+export const isEmbedYoutube = (node: unknown): node is Link => {
+  if (!isLink(node)) {
+    return false;
+  }
+  if (!node.url.startsWith('https://www.youtube.com/watch')) {
+    return false;
+  }
   return true;
 };

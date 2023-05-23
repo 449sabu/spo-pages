@@ -144,8 +144,8 @@ const Article: NextPage<Props> = ({
                     className="pb-8"
                   />
                 )}
-                <article className="article max-w-none pb-4">
-                  {/* <article className="prose prose-indigo max-w-none pb-4"> */}
+                {/* <article className="article max-w-none pb-4"> */}
+                <article className="prose max-w-none pb-4">
                   <MDXRemote {...source} components={replaceComponents} />
                 </article>
               </div>

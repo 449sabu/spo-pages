@@ -6,6 +6,10 @@ import rehypeSlug from 'rehype-slug';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import {
+  embedYoutubeHandler,
+  remarkEmbedYoutube,
+} from '../unified-plugin/embedPlugin';
+import {
   messageHandler,
   remarkMessage,
   remarkAlert,
@@ -19,10 +23,7 @@ import {
   remarkLinkCard,
   linkCardHandler,
 } from '@/utils/unified-plugin/linkCardPlugin';
-import {
-  // print,
-  remarkZennCode,
-} from '@/utils/unified-plugin/unifiedPlugin';
+import { print, remarkZennCode } from '@/utils/unified-plugin/unifiedPlugin';
 
 export const serializer = async (source: string) => {
   const result = await serialize(source, {
@@ -35,6 +36,7 @@ export const serializer = async (source: string) => {
         remarkAlert,
         remarkMessage,
         remarkLinkCard,
+        remarkEmbedYoutube,
         remarkGfm,
       ],
       rehypePlugins: [
@@ -49,6 +51,7 @@ export const serializer = async (source: string) => {
           },
         ],
         [rehypePrettyCode, rehypePrettyCodeOptions],
+        print,
       ],
       remarkRehypeOptions: {
         handlers: {
@@ -56,6 +59,7 @@ export const serializer = async (source: string) => {
           message: messageHandler,
           alert: alertHandler,
           details: detailsHandler,
+          embedYoutube: embedYoutubeHandler,
         },
       },
       format: 'mdx',

@@ -2,34 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  /* .wave {
-    @apply
-    h-24
-    overflow-hidden
-    relative
-  } */
-
-  /* .wave::before {
-    @apply
-    absolute
-    z-[3]
-    pointer-events-none
-    bg-no-repeat
-
-    top-[-1vw]
-    bottom-[-1vw]
-    left-[-1vw]
-    right-[-1vw]
-
-    scale-[1.7]
-    origin-[100%_0]
-    animate-[10s_infinite_alternate_wave_linear]
-    bg-[length:100%_100px]
-    bg-[50%_0%]
-    bg-[url('../../public/wave.svg')]
-  } */
-}
+  /* theme */
 .sunset {
   @apply bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500
 }
@@ -46,37 +19,28 @@
   @apply bg-gradient-to-r from-yellow-200 via-green-200 to-green-300
 }
 
-/* costume style in prose */
 @layer components {
-  .prose  .mermaid-style{
-    @apply bg-white border border-gray-300 py-4 p-1 md:p-8 rounded-lg my-8 m-auto 
-  }
-  .prose img {
-    @apply m-auto
-  }
-  .prose .link-card{
-    @apply flex  m-auto truncate border border-gray-200 rounded max-w-lg my-8
-  }
-  .prose .link-card-img{
-    @apply flex basis-44 grow max-w-[200px] shrink-[6]
-  }
-  .prose .link-card-img img{
-    @apply object-cover m-0
-  }
-  .prose .link-card-text{
-    @apply flex shrink grow-[4] basis-44 flex-col overflow-hidden px-4
-  }
-  .prose .link-card-text .link-card-title{
-    @apply overflow-hidden text-ellipsis whitespace-nowrap font-bold
-  }
-  .prose .link-card-text .link-card-url{
-    @apply min-h-[2em] overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[color:var(--secondary)]
-  }
-  .prose .task-list-item{
-    @apply m-0 list-none leading-10
-  }
-  .prose .task-list-item input {
-    @apply my-0 mr-2
+/* costume style in prose */
+  .prose {
+    & h1 {
+      @apply my-4 py-4 pl-4 text-2xl bg-gray-100 border-l-8 border-blue-400 
+    }
+    & h2 {
+      @apply py-2 text-2xl border-b-2
+    }
+    & img {
+      @apply m-auto
+    }
+    & svg {
+      @apply m-auto py-4
+    }
+    /* gfm task list */
+    & .task-list-item {
+      @apply m-0 list-none
+    }
+    & .task-list-item input {
+      @apply my-0 mr-2
+    }
   }
 }
 
@@ -175,19 +139,8 @@ code[data-line-numbers-max-digits='3'] > .line::before {
   }
 }
 
-@layer components {
+@layer base {
   article {
-    & h1 {
-      @apply my-4 py-4 pl-4 text-3xl bg-blue-50 border-l-8 border-blue-800 
-    }
-    & h2 {
-      @apply my-4 py-2 text-2xl border-b-8 border-blue-800 border-double
-    }
-    & h3 {
-      @apply my-4 text-2xl
-    }
-    & h4 {
-      @apply my-4 text-xl
-    }
+
   }
 }

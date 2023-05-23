@@ -6,7 +6,11 @@ import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
 import type { VFileCompatible } from 'vfile';
 import { getOgpData } from '@/utils/getOgpData';
-import { isParent, isLinkCard } from '@/utils/unified-plugin/mdast-util-test';
+import {
+  isParent,
+  isLinkCard,
+  isEmbedYoutube,
+} from '@/utils/unified-plugin/mdast-util-test';
 
 export interface LinkCard extends Literal {
   type: 'linkCard';
@@ -35,6 +39,10 @@ export const remarkLinkCard: Plugin = (): Transformer => {
         return;
       }
       const child = node.children[0] as Link;
+
+      if (isEmbedYoutube(node.children[0])) {
+        return;
+      }
 
       promises.push(async () => {
         const data = await getOgpData(child.url);

@@ -12,17 +12,17 @@ const LinkCard: React.FC<LinkCardProps> = (props) => {
   const { url, title, description, og } = props;
 
   return (
-    <div className="my-4 h-[105px] max-w-xl transition hover:bg-[color:var(--hover)]">
+    <div className="my-4 h-[105px] max-w-xl transition m-auto">
       <a href={url} target="_blank" rel="noopener noreferrer">
-        <span className="my-4 flex h-full w-full overflow-hidden rounded-md border-2 border-solid border-[color:var(--line)]">
+        <span className="my-4 flex h-full w-full overflow-hidden rounded-md border-2 border-solid">
           <span className="flex shrink grow-[4] basis-44 flex-col overflow-hidden p-4">
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap font-bold">
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap font-bold text-gray-950">
               {title}
             </span>
-            <span className="min-h-[2em] overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[color:var(--secondary)]">
+            <span className="min-h-[2em] overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-950">
               {description}
             </span>
-            <span className="flex h-5 items-center gap-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+            <span className="flex h-5 items-center gap-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-950">
               {url.indexOf('/', 8) != -1
                 ? url.slice(8, url.indexOf('/', 8))
                 : url.slice(8)}
