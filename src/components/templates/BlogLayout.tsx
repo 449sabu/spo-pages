@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { MDXRemote } from 'next-mdx-remote';
 
 interface LayoutProps {
   children: React.ReactNode;
-  blog_index: string;
+  blog_index: MDXRemoteSerializeResult;
   topic_list: string[];
 }
 
@@ -63,10 +65,13 @@ const BlogLayout = ({ children, blog_index, topic_list }: LayoutProps) => {
               </svg>
               <p>もくじ</p>
             </div>
-            <div
+            <div className="grid grid-cols-1">
+              <MDXRemote {...blog_index} />
+            </div>
+            {/* <div
               className="grid grid-cols-1"
               dangerouslySetInnerHTML={{ __html: blog_index }}
-            />
+            /> */}
           </div>
         </div>
       </div>

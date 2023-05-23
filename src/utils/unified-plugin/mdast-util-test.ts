@@ -149,3 +149,13 @@ export const isEmbedYoutube = (node: unknown): node is Link => {
   }
   return true;
 };
+
+export const isEmbedTwitter = (node: unknown): node is Link => {
+  if (!isLink(node)) {
+    return false;
+  }
+  if (!node.url.startsWith('https://twitter.com')) {
+    return false;
+  }
+  return true;
+};

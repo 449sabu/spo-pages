@@ -10,6 +10,7 @@ import {
   isParent,
   isLinkCard,
   isEmbedYoutube,
+  isEmbedTwitter,
 } from '@/utils/unified-plugin/mdast-util-test';
 
 export interface LinkCard extends Literal {
@@ -40,7 +41,10 @@ export const remarkLinkCard: Plugin = (): Transformer => {
       }
       const child = node.children[0] as Link;
 
-      if (isEmbedYoutube(node.children[0])) {
+      if (
+        isEmbedYoutube(node.children[0]) ||
+        isEmbedTwitter(node.children[0])
+      ) {
         return;
       }
 

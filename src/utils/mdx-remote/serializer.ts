@@ -6,7 +6,8 @@ import rehypeSlug from 'rehype-slug';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import {
-  embedYoutubeHandler,
+  embedElementHandler,
+  remarkEmbedTwitter,
   remarkEmbedYoutube,
 } from '../unified-plugin/embedPlugin';
 import {
@@ -23,10 +24,10 @@ import {
   remarkLinkCard,
   linkCardHandler,
 } from '@/utils/unified-plugin/linkCardPlugin';
-import { print, remarkZennCode } from '@/utils/unified-plugin/unifiedPlugin';
+import { remarkZennCode } from '@/utils/unified-plugin/unifiedPlugin';
 
 export const serializer = async (source: string) => {
-  const result = await serialize(source, {
+  const content = await serialize(source, {
     scope: {},
     mdxOptions: {
       remarkPlugins: [
@@ -37,6 +38,7 @@ export const serializer = async (source: string) => {
         remarkMessage,
         remarkLinkCard,
         remarkEmbedYoutube,
+        remarkEmbedTwitter,
         remarkGfm,
       ],
       rehypePlugins: [
@@ -51,7 +53,6 @@ export const serializer = async (source: string) => {
           },
         ],
         [rehypePrettyCode, rehypePrettyCodeOptions],
-        print,
       ],
       remarkRehypeOptions: {
         handlers: {
@@ -59,15 +60,15 @@ export const serializer = async (source: string) => {
           message: messageHandler,
           alert: alertHandler,
           details: detailsHandler,
-          embedYoutube: embedYoutubeHandler,
+          embedYoutube: embedElementHandler,
+          embedTwitter: embedElementHandler,
         },
       },
       format: 'mdx',
     },
     parseFrontmatter: true,
   });
-
-  return result;
+  return content;
 };
 
 /**

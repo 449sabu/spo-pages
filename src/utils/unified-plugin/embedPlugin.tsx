@@ -8,10 +8,11 @@ import type { VFileCompatible } from 'vfile';
 import {
   isParent,
   isEmbedYoutube,
+  isEmbedTwitter,
 } from '@/utils/unified-plugin/mdast-util-test';
 
-export interface EmbedYoutube {
-  type: 'embedYoutube';
+export interface EmbedElement {
+  type: 'embedYoutube' | 'embedTwitter';
   meta: {
     url: string;
     id: string;
@@ -32,14 +33,14 @@ export const remarkEmbedYoutube: Plugin = (): Transformer => {
       const match = node.url.match(regex);
       if (match) {
         const videoId = match[1];
-        // console.log('✅' + videoId);
+
         parent.children[index] = {
           type: 'embedYoutube',
           meta: {
             url: node.url,
             id: videoId,
           },
-        } as EmbedYoutube;
+        } as EmbedElement;
       }
       return;
     };
@@ -47,8 +48,49 @@ export const remarkEmbedYoutube: Plugin = (): Transformer => {
   };
 };
 
+export const remarkEmbedTwitter: Plugin = (): Transformer => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (tree: Node, _file: VFileCompatible) => {
+    const visiter = (node: Link, index: number, parent: Parent | undefined) => {
+      if (!isParent(parent)) {
+        return;
+      }
+      if (parent.type === 'listItem') {
+        return;
+      }
+      // console.log(node.url);
+      const regex = /\/status\/(\d+)/;
+      const match = node.url.match(regex);
+      if (match) {
+        const tweetId = match[1];
+        // console.log(tweetId);
+        parent.children[index] = {
+          type: 'embedTwitter',
+          meta: {
+            url: node.url,
+            id: tweetId,
+          },
+        } as EmbedElement;
+      }
+      return;
+    };
+    visit(tree, isEmbedTwitter, visiter);
+  };
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const embedYoutubeHandler = (_h: H, node: EmbedYoutube): Element => {
+export const embedElementHandler = (_h: H, node: EmbedElement): Element => {
+  if (node.type === 'embedTwitter') {
+    return {
+      type: 'element' as const,
+      tagName: 'twitter',
+      properties: {
+        url: node.meta.url,
+        id: node.meta.id,
+      },
+      children: [],
+    };
+  }
   return {
     type: 'element' as const,
     tagName: 'youtube',

@@ -5,7 +5,7 @@ export interface EmbedYoutubeProps {
 
 const EmbedYoutube: React.FC<EmbedYoutubeProps> = (props) => {
   return (
-    <div>
+    <div className="flex justify-center">
       <iframe
         width="560"
         height="315"

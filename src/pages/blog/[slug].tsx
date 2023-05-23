@@ -1,18 +1,23 @@
 import fs from 'fs';
-import { ParsedUrlQuery } from 'node:querystring';
+import type { ParsedUrlQuery } from 'node:querystring';
 import matter from 'gray-matter';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { NextSeo } from 'next-seo';
 import BreadCrumb from '@/components/modecules/BreadCrumb';
 import BlogLayout from '@/components/templates/BlogLayout';
 import Layout from '@/components/templates/Layout';
 import { createTopics, readArticles, readConfigFile } from '@/utils/config';
 import { fetcher } from '@/utils/fetcher';
-import {
-  markdownToHtml,
-  markdownToIndex,
-} from '@/utils/markdownToHtml/markdownToHtml';
+// import {
+//   markdownToHtml,
+//   markdownToIndex,
+// } from '@/utils/markdownToHtml/markdownToHtml';
+import replaceComponents from '@/utils/mdx-remote/component';
+import { indexSerializer } from '@/utils/mdx-remote/indexSerializer';
+import { serializer } from '@/utils/mdx-remote/serializer';
 import { PoolInformation } from '@/utils/swr/poolInformation';
 
 interface Params extends ParsedUrlQuery {
@@ -21,12 +26,12 @@ interface Params extends ParsedUrlQuery {
 
 type Props = {
   frontMatter: FrontMatter;
-  html: string;
-  htmlIndex: string;
   configuration: SiteConfig;
   poolInformation: PoolInformation[];
   exMetadata: ExtendedMetadata;
   topics: string[];
+  source: MDXRemoteSerializeResult;
+  htmlIndex: MDXRemoteSerializeResult;
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -47,10 +52,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   const file = fs.readFileSync(`articles/${params!.slug}.md`, 'utf-8');
-  const { data, content } = matter(file);
-  const html = await markdownToHtml(content);
-  const htmlIndex = await markdownToIndex(content);
+  const { data } = matter(file);
+  // mdx
+  const mdxSource = await serializer(file);
+  const Index = await indexSerializer(file);
 
+  // config
   const configuration = readConfigFile();
   const poolInformation = await PoolInformation(
     process.env.NEXT_PUBLIC_POOL_ID || '',
@@ -64,24 +71,24 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   return {
     props: {
       frontMatter: data,
-      html,
-      htmlIndex,
+      htmlIndex: Index,
       configuration,
       poolInformation,
       exMetadata,
       topics,
+      source: mdxSource,
     },
   };
 };
 
 const Article: NextPage<Props> = ({
   frontMatter,
-  html,
   htmlIndex,
   configuration,
   poolInformation,
   exMetadata,
   topics,
+  source,
 }) => {
   return (
     <>
@@ -133,10 +140,10 @@ const Article: NextPage<Props> = ({
                     className="pb-8"
                   />
                 )}
-                <div
-                  dangerouslySetInnerHTML={{ __html: html }}
-                  className="prose max-w-none prose-blue pb-4"
-                />
+                {/* <article className="article max-w-none pb-4"> */}
+                <article className="prose max-w-none pb-4">
+                  <MDXRemote {...source} components={replaceComponents} />
+                </article>
               </div>
             </div>
           </BlogLayout>

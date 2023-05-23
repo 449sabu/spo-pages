@@ -3,6 +3,8 @@ import type { DetailsProps } from '@/components/atoms/Details';
 import Details from '@/components/atoms/Details';
 import type { MessageProps } from '@/components/atoms/MessageAlert';
 import MessageAlert from '@/components/atoms/MessageAlert';
+import EmbedTwitter from '@/components/modecules/EmbedTwitter';
+import type { EmbedTwitterProps } from '@/components/modecules/EmbedTwitter';
 import type { EmbedYoutubeProps } from '@/components/modecules/EmbedYoutube';
 import EmbedYoutube from '@/components/modecules/EmbedYoutube';
 import type { LinkCardProps } from '@/components/organisms/LinkCard';
@@ -12,6 +14,7 @@ type ProvidedComponents = MDXComponents & {
   // a: typeof NextLink;
   // img: typeof NextImage;
   youtube: typeof EmbedYoutube;
+  twitter: typeof EmbedTwitter;
   linkcard: typeof LinkCard;
   message: typeof MessageAlert;
   alert: typeof MessageAlert;
@@ -22,6 +25,7 @@ const replaceComponents = {
   // a: (props: NextLinkProps) => <NextLink {...props} />,
   // img: (props: NextImageProps) => <NextImage {...props} />,
   youtube: (props: EmbedYoutubeProps) => <EmbedYoutube {...props} />,
+  twitter: (props: EmbedTwitterProps) => <EmbedTwitter {...props} />,
   linkcard: (props: LinkCardProps) => <LinkCard {...props} />,
   message: (props: MessageProps) => <MessageAlert {...props} />,
   alert: (props: MessageProps) => <MessageAlert {...props} />,
